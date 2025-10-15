@@ -1,0 +1,2034 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Quiz Platform - Test Your Knowledge</title>
+    <meta name="description" content="Free online quiz platform with Math, Science, History, Geography, and OOPs quizzes. Test your knowledge with hundreds of questions.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            width: 100%;
+            max-width: 400px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            padding: 30px;
+        }
+
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .login-header h1 {
+            color: #1a73e8;
+            margin-bottom: 10px;
+        }
+
+        .login-header p {
+            color: #5f6368;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .form-group label {
+            color: #202124;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            padding: 12px 15px;
+            border: 1px solid #dadce0;
+            border-radius: 6px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #1a73e8;
+            box-shadow: 0 0 0 2px rgba(26, 115, 232, 0.2);
+        }
+
+        .login-btn {
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #0d62c9;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #5f6368;
+        }
+
+        .register-link a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-link a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            color: #d93025;
+            font-size: 14px;
+            margin-top: 5px;
+            display: none;
+        }
+
+        /* Browser Styles */
+        .browser-container {
+            width: 100%;
+            max-width: 1200px;
+            height: 90vh;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            display: none;
+        }
+
+        /* Browser Header Styles */
+        .browser-header {
+            background: #f1f3f4;
+            padding: 12px 15px;
+            border-bottom: 1px solid #dadce0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-right: auto;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: #1a73e8;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .browser-controls {
+            display: flex;
+            gap: 8px;
+        }
+
+        .control-btn {
+            width: 36px;
+            height: 36px;
+            border: none;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s;
+        }
+
+        .control-btn:hover {
+            background: #e8f0fe;
+            transform: translateY(-1px);
+        }
+
+        .control-btn:active {
+            transform: translateY(1px);
+        }
+
+        .address-bar {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 24px;
+            padding: 0 15px;
+            height: 40px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .address-bar i {
+            color: #5f6368;
+            margin-right: 8px;
+        }
+
+        #urlInput {
+            flex: 1;
+            border: none;
+            outline: none;
+            font-size: 14px;
+            background: transparent;
+        }
+
+        .browser-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            padding: 8px 16px;
+            background: #1a73e8;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+
+        .action-btn:hover {
+            background: #0d62c9;
+        }
+
+        .logout-btn {
+            background: #d93025;
+        }
+
+        .logout-btn:hover {
+            background: #b31412;
+        }
+
+        /* Browser Content Styles */
+        .browser-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Home Screen Styles */
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .welcome-section h1 {
+            color: #1a73e8;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+        }
+
+        .welcome-section p {
+            color: #5f6368;
+            font-size: 1.1rem;
+        }
+
+        .user-stats {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            min-width: 150px;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #1a73e8;
+        }
+
+        .stat-label {
+            color: #5f6368;
+            margin-top: 5px;
+        }
+
+        .quiz-categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .category-card {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            border: 2px solid transparent;
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+            border-color: #1a73e8;
+        }
+
+        .category-icon {
+            font-size: 48px;
+            margin-bottom: 15px;
+            color: #1a73e8;
+        }
+
+        .category-card h3 {
+            color: #202124;
+            margin-bottom: 10px;
+        }
+
+        .category-card p {
+            color: #5f6368;
+            line-height: 1.5;
+        }
+
+        /* Quiz Screen Styles */
+        .quiz-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e8eaed;
+        }
+
+        .quiz-title {
+            color: #1a73e8;
+            font-size: 1.8rem;
+        }
+
+        .quiz-progress {
+            background: #1a73e8;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .question-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            color: #202124;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px;
+            border: 2px solid #e8eaed;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 1rem;
+            position: relative;
+        }
+
+        .option:hover {
+            border-color: #1a73e8;
+            background: #f0f6ff;
+        }
+
+        .option.selected {
+            border-color: #1a73e8;
+            background: #1a73e8;
+            color: white;
+        }
+
+        .quiz-navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 25px;
+        }
+
+        .nav-btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:disabled {
+            background: #f1f3f4;
+            color: #9aa0a6;
+            cursor: not-allowed;
+        }
+
+        #prevBtn {
+            background: #f1f3f4;
+            color: #1a73e8;
+        }
+
+        #prevBtn:hover:not(:disabled) {
+            background: #e8f0fe;
+        }
+
+        #nextBtn, #submitBtn {
+            background: #1a73e8;
+            color: white;
+        }
+
+        #nextBtn:hover:not(:disabled), #submitBtn:hover {
+            background: #0d62c9;
+        }
+
+        #submitBtn {
+            display: none;
+        }
+
+        /* Results Screen Styles */
+        .results-container {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            text-align: center;
+        }
+
+        .score-display {
+            margin-bottom: 30px;
+        }
+
+        .score-display h2 {
+            color: #1a73e8;
+            margin-bottom: 15px;
+            font-size: 2rem;
+        }
+
+        .score-value {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #34a853;
+            margin: 10px 0;
+        }
+
+        .score-message {
+            font-size: 1.2rem;
+            color: #5f6368;
+            margin-top: 10px;
+        }
+
+        .answers-review {
+            text-align: left;
+            margin: 25px 0;
+        }
+
+        .answers-review h3 {
+            color: #202124;
+            margin-bottom: 15px;
+            border-bottom: 1px solid #e8eaed;
+            padding-bottom: 8px;
+        }
+
+        .answer-item {
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 6px;
+            border-left: 4px solid #1a73e8;
+            background: #f8f9fa;
+        }
+
+        .answer-item.correct {
+            border-left-color: #34a853;
+            background: #f0f8f0;
+        }
+
+        .answer-item.incorrect {
+            border-left-color: #ea4335;
+            background: #fef0ef;
+        }
+
+        #restartQuiz {
+            background: #34a853;
+            color: white;
+            padding: 12px 30px;
+            font-size: 1.1rem;
+        }
+
+        #restartQuiz:hover {
+            background: #2d944a;
+        }
+
+        /* Status Bar Styles */
+        .status-bar {
+            background: #202124;
+            color: #e8eaed;
+            padding: 8px 15px;
+            font-size: 0.9rem;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        /* Registration Form Styles */
+        .register-container {
+            display: none;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .browser-container {
+                height: 95vh;
+            }
+            
+            .browser-header {
+                flex-wrap: wrap;
+            }
+            
+            .user-info {
+                order: 1;
+                width: 100%;
+                justify-content: center;
+                margin-bottom: 10px;
+            }
+            
+            .browser-controls {
+                order: 2;
+            }
+            
+            .address-bar {
+                order: 3;
+                width: 100%;
+                margin-top: 10px;
+            }
+            
+            .browser-actions {
+                order: 4;
+                width: 100%;
+                justify-content: center;
+                margin-top: 10px;
+            }
+            
+            .user-stats {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .quiz-categories {
+                grid-template-columns: 1fr;
+            }
+            
+            .quiz-header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .quiz-navigation {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .nav-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div class="login-container" id="loginContainer">
+        <div class="login-header">
+            <h1>Quiz Browser</h1>
+            <p>Sign in to access your quizzes</p>
+        </div>
+        <form class="login-form" id="loginForm">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" placeholder="Enter your username" required>
+                <div class="error-message" id="usernameError">Username is required</div>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" placeholder="Enter your password" required>
+                <div class="error-message" id="passwordError">Password is required</div>
+            </div>
+            <button type="submit" class="login-btn">Sign In</button>
+        </form>
+        <div class="register-link">
+            Don't have an account? <a href="#" id="showRegister">Register here</a>
+        </div>
+    </div>
+
+    <!-- Registration Page -->
+    <div class="login-container register-container" id="registerContainer">
+        <div class="login-header">
+            <h1>Create Account</h1>
+            <p>Register for Quiz Browser</p>
+        </div>
+        <form class="login-form" id="registerForm">
+            <div class="form-group">
+                <label for="regUsername">Username</label>
+                <input type="text" id="regUsername" placeholder="Choose a username" required>
+                <div class="error-message" id="regUsernameError">Username is required</div>
+            </div>
+            <div class="form-group">
+                <label for="regEmail">Email</label>
+                <input type="email" id="regEmail" placeholder="Enter your email" required>
+                <div class="error-message" id="regEmailError">Valid email is required</div>
+            </div>
+            <div class="form-group">
+                <label for="regPassword">Password</label>
+                <input type="password" id="regPassword" placeholder="Create a password" required>
+                <div class="error-message" id="regPasswordError">Password must be at least 6 characters</div>
+            </div>
+            <div class="form-group">
+                <label for="regConfirmPassword">Confirm Password</label>
+                <input type="password" id="regConfirmPassword" placeholder="Confirm your password" required>
+                <div class="error-message" id="regConfirmPasswordError">Passwords do not match</div>
+            </div>
+            <button type="submit" class="login-btn">Register</button>
+        </form>
+        <div class="register-link">
+            Already have an account? <a href="#" id="showLogin">Sign in here</a>
+        </div>
+    </div>
+
+    <!-- Browser Container -->
+    <div class="browser-container" id="browserContainer">
+        <!-- Browser Header -->
+        <div class="browser-header">
+            <div class="user-info">
+                <div class="user-avatar" id="userAvatar">U</div>
+                <span id="userGreeting">Welcome, User!</span>
+            </div>
+            <div class="browser-controls">
+                <button id="backBtn" class="control-btn" title="Back">←</button>
+                <button id="forwardBtn" class="control-btn" title="Forward">→</button>
+                <button id="refreshBtn" class="control-btn" title="Refresh">↻</button>
+            </div>
+            <div class="address-bar">
+                <i>🔍</i>
+                <input type="text" id="urlInput" placeholder="Enter quiz name (e.g., math, science, history)">
+            </div>
+            <div class="browser-actions">
+                <button id="homeBtn" class="action-btn">Home</button>
+                <button id="logoutBtn" class="action-btn logout-btn">Logout</button>
+            </div>
+        </div>
+
+        <!-- Browser Content -->
+        <div class="browser-content">
+            <!-- Home Screen -->
+            <div id="homeScreen" class="screen active">
+                <div class="welcome-section">
+                    <h1 id="personalGreeting">Welcome to Quiz Browser!</h1>
+                    <p>Select a quiz category to test your knowledge</p>
+                </div>
+                
+                <div class="user-stats">
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalQuizzes">0</div>
+                        <div class="stat-label">Quizzes Taken</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="averageScore">0%</div>
+                        <div class="stat-label">Average Score</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-value" id="totalPoints">0</div>
+                        <div class="stat-label">Total Points</div>
+                    </div>
+                </div>
+                
+                <div class="quiz-categories">
+                    <div class="category-card" data-quiz="math">
+                        <div class="category-icon">∫</div>
+                        <h3>Mathematics</h3>
+                        <p>Test your math skills with 100 questions covering various topics</p>
+                    </div>
+                    <div class="category-card" data-quiz="science">
+                        <div class="category-icon">🔬</div>
+                        <h3>Science</h3>
+                        <p>Explore 100 questions about biology, chemistry, physics, and more</p>
+                    </div>
+                    <div class="category-card" data-quiz="history">
+                        <div class="category-icon">📜</div>
+                        <h3>History</h3>
+                        <p>Challenge your knowledge with 100 historical questions</p>
+                    </div>
+                    <div class="category-card" data-quiz="geography">
+                        <div class="category-icon">🌍</div>
+                        <h3>Geography</h3>
+                        <p>Test your knowledge with 100 geography questions</p>
+                    </div>
+                    <div class="category-card" data-quiz="oops">
+                        <div class="category-icon">{} </div>
+                        <h3>Object Oriented Programming</h3>
+                        <p>Test your knowledge with 100 OOPs questions covering all concepts</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Screen -->
+            <div id="quizScreen" class="screen">
+                <div class="quiz-header">
+                    <h2 id="quizTitle" class="quiz-title">Quiz Title</h2>
+                    <div class="quiz-progress">
+                        Question <span id="currentQuestion">1</span> of <span id="totalQuestions">10</span>
+                    </div>
+                </div>
+                
+                <div class="question-container">
+                    <h3 id="questionText" class="question-text">Question will appear here</h3>
+                    <div id="optionsContainer" class="options-container">
+                        <!-- Options will be dynamically added here -->
+                    </div>
+                </div>
+
+                <div class="quiz-navigation">
+                    <button id="prevBtn" class="nav-btn" disabled>Previous</button>
+                    <button id="nextBtn" class="nav-btn">Next</button>
+                    <button id="submitBtn" class="nav-btn">Submit Quiz</button>
+                </div>
+            </div>
+
+            <!-- Results Screen -->
+            <div id="resultsScreen" class="screen">
+                <div class="results-container">
+                    <div class="score-display">
+                        <h2>Quiz Completed!</h2>
+                        <div class="score-value">
+                            <span id="finalScore">0</span>/<span id="maxScore">0</span>
+                        </div>
+                        <p class="score-message" id="scoreMessage">Well done!</p>
+                    </div>
+                    
+                    <div class="answers-review">
+                        <h3>Review Your Answers</h3>
+                        <div id="answersList">
+                            <!-- Answer review will be dynamically added here -->
+                        </div>
+                    </div>
+                    
+                    <button id="restartQuiz" class="nav-btn">Take Another Quiz</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Bar -->
+        <div class="status-bar">
+            <span id="statusText">Ready - Select a quiz to begin</span>
+            <span>Quiz Browser v2.0</span>
+        </div>
+    </div>
+
+    <script>
+        // Quiz Data with 100 questions per category
+        const QUIZ_DATA = {
+            math: {
+                title: "Mathematics Quiz",
+                questions: [
+                    { question: "What is 15 + 27?", options: ["42", "32", "52", "37"], correctAnswer: 0 },
+                    { question: "What is the value of π (pi) approximately?", options: ["3.14", "2.71", "1.61", "3.16"], correctAnswer: 0 },
+                    { question: "Solve for x: 2x + 5 = 15", options: ["5", "10", "7.5", "8"], correctAnswer: 0 },
+                    { question: "What is the area of a circle with radius 5?", options: ["25π", "10π", "50π", "5π"], correctAnswer: 0 },
+                    { question: "What is 8 × 9?", options: ["72", "81", "64", "89"], correctAnswer: 0 },
+                    { question: "What is the square root of 144?", options: ["12", "14", "16", "18"], correctAnswer: 0 },
+                    { question: "If a triangle has angles of 90°, 45°, and 45°, what type is it?", options: ["Right isosceles", "Equilateral", "Scalene", "Obtuse"], correctAnswer: 0 },
+                    { question: "What is 3/4 as a percentage?", options: ["75%", "25%", "50%", "100%"], correctAnswer: 0 },
+                    { question: "What is 12 × 11?", options: ["132", "121", "144", "123"], correctAnswer: 0 },
+                    { question: "What is 64 ÷ 8?", options: ["8", "7", "9", "6"], correctAnswer: 0 },
+                    { question: "What is 5²?", options: ["25", "10", "15", "20"], correctAnswer: 0 },
+                    { question: "What is 100 ÷ 4?", options: ["25", "20", "30", "40"], correctAnswer: 0 },
+                    { question: "What is 7 × 8?", options: ["56", "54", "64", "48"], correctAnswer: 0 },
+                    { question: "What is 3³?", options: ["27", "9", "12", "6"], correctAnswer: 0 },
+                    { question: "What is 144 ÷ 12?", options: ["12", "10", "14", "16"], correctAnswer: 0 },
+                    { question: "What is 9 × 7?", options: ["63", "56", "72", "54"], correctAnswer: 0 },
+                    { question: "What is 15% of 200?", options: ["30", "15", "25", "20"], correctAnswer: 0 },
+                    { question: "What is 4² + 3²?", options: ["25", "13", "16", "12"], correctAnswer: 0 },
+                    { question: "What is 1000 ÷ 10?", options: ["100", "10", "1000", "50"], correctAnswer: 0 },
+                    { question: "What is 6 × 12?", options: ["72", "60", "84", "66"], correctAnswer: 0 },
+                    { question: "What is 8²?", options: ["64", "16", "32", "48"], correctAnswer: 0 },
+                    { question: "What is 45 ÷ 9?", options: ["5", "4", "6", "7"], correctAnswer: 0 },
+                    { question: "What is 11 × 11?", options: ["121", "111", "112", "122"], correctAnswer: 0 },
+                    { question: "What is 75% of 80?", options: ["60", "50", "70", "65"], correctAnswer: 0 },
+                    { question: "What is 7² - 3²?", options: ["40", "32", "36", "28"], correctAnswer: 0 },
+                    { question: "What is 125 ÷ 5?", options: ["25", "20", "30", "15"], correctAnswer: 0 },
+                    { question: "What is 9 × 9?", options: ["81", "72", "90", "64"], correctAnswer: 0 },
+                    { question: "What is 200 ÷ 4?", options: ["50", "40", "60", "25"], correctAnswer: 0 },
+                    { question: "What is 12²?", options: ["144", "121", "169", "100"], correctAnswer: 0 },
+                    { question: "What is 56 ÷ 7?", options: ["8", "7", "9", "6"], correctAnswer: 0 },
+                    { question: "What is 13 × 5?", options: ["65", "60", "55", "70"], correctAnswer: 0 },
+                    { question: "What is 90% of 50?", options: ["45", "40", "50", "35"], correctAnswer: 0 },
+                    { question: "What is 8³?", options: ["512", "64", "256", "128"], correctAnswer: 0 },
+                    { question: "What is 144 ÷ 6?", options: ["24", "12", "18", "16"], correctAnswer: 0 },
+                    { question: "What is 15 × 6?", options: ["90", "80", "100", "75"], correctAnswer: 0 },
+                    { question: "What is 25% of 120?", options: ["30", "25", "35", "20"], correctAnswer: 0 },
+                    { question: "What is 10² + 5²?", options: ["125", "100", "150", "75"], correctAnswer: 0 },
+                    { question: "What is 81 ÷ 9?", options: ["9", "8", "7", "10"], correctAnswer: 0 },
+                    { question: "What is 14 × 7?", options: ["98", "84", "112", "91"], correctAnswer: 0 },
+                    { question: "What is 60% of 150?", options: ["90", "75", "100", "80"], correctAnswer: 0 },
+                    { question: "What is 6³?", options: ["216", "36", "128", "144"], correctAnswer: 0 },
+                    { question: "What is 169 ÷ 13?", options: ["13", "11", "12", "14"], correctAnswer: 0 },
+                    { question: "What is 18 × 5?", options: ["90", "80", "100", "85"], correctAnswer: 0 },
+                    { question: "What is 40% of 200?", options: ["80", "60", "100", "40"], correctAnswer: 0 },
+                    { question: "What is 12³?", options: ["1728", "144", "1296", "1152"], correctAnswer: 0 },
+                    { question: "What is 225 ÷ 15?", options: ["15", "12", "18", "20"], correctAnswer: 0 },
+                    { question: "What is 22 × 4?", options: ["88", "84", "92", "80"], correctAnswer: 0 },
+                    { question: "What is 75% of 120?", options: ["90", "80", "100", "85"], correctAnswer: 0 },
+                    { question: "What is 5³ + 2³?", options: ["133", "125", "128", "140"], correctAnswer: 0 },
+                    { question: "What is 256 ÷ 16?", options: ["16", "12", "18", "14"], correctAnswer: 0 },
+                    { question: "What is 17 × 6?", options: ["102", "96", "108", "112"], correctAnswer: 0 },
+                    { question: "What is 20% of 250?", options: ["50", "40", "60", "45"], correctAnswer: 0 },
+                    { question: "What is 9³?", options: ["729", "81", "648", "512"], correctAnswer: 0 },
+                    { question: "What is 324 ÷ 18?", options: ["18", "16", "20", "22"], correctAnswer: 0 },
+                    { question: "What is 25 × 8?", options: ["200", "180", "220", "160"], correctAnswer: 0 },
+                    { question: "What is 85% of 200?", options: ["170", "160", "180", "150"], correctAnswer: 0 },
+                    { question: "What is 7³ - 3³?", options: ["316", "300", "324", "308"], correctAnswer: 0 },
+                    { question: "What is 400 ÷ 20?", options: ["20", "15", "25", "30"], correctAnswer: 0 },
+                    { question: "What is 30 × 7?", options: ["210", "200", "220", "180"], correctAnswer: 0 },
+                    { question: "What is 95% of 100?", options: ["95", "90", "85", "100"], correctAnswer: 0 },
+                    { question: "What is 11³?", options: ["1331", "121", "1441", "1221"], correctAnswer: 0 },
+                    { question: "What is 484 ÷ 22?", options: ["22", "20", "24", "18"], correctAnswer: 0 },
+                    { question: "What is 35 × 6?", options: ["210", "200", "220", "180"], correctAnswer: 0 },
+                    { question: "What is 15% of 300?", options: ["45", "40", "50", "35"], correctAnswer: 0 },
+                    { question: "What is 12³ - 8³?", options: ["1216", "1000", "1152", "1280"], correctAnswer: 0 },
+                    { question: "What is 576 ÷ 24?", options: ["24", "20", "28", "22"], correctAnswer: 0 },
+                    { question: "What is 42 × 5?", options: ["210", "200", "220", "180"], correctAnswer: 0 },
+                    { question: "What is 65% of 180?", options: ["117", "110", "120", "125"], correctAnswer: 0 },
+                    { question: "What is 13³?", options: ["2197", "169", "2028", "2145"], correctAnswer: 0 },
+                    { question: "What is 676 ÷ 26?", options: ["26", "24", "28", "22"], correctAnswer: 0 },
+                    { question: "What is 48 × 4?", options: ["192", "180", "200", "176"], correctAnswer: 0 },
+                    { question: "What is 80% of 150?", options: ["120", "100", "130", "110"], correctAnswer: 0 },
+                    { question: "What is 14³?", options: ["2744", "196", "2646", "2888"], correctAnswer: 0 },
+                    { question: "What is 784 ÷ 28?", options: ["28", "24", "32", "26"], correctAnswer: 0 },
+                    { question: "What is 55 × 6?", options: ["330", "300", "360", "320"], correctAnswer: 0 },
+                    { question: "What is 45% of 220?", options: ["99", "90", "100", "110"], correctAnswer: 0 },
+                    { question: "What is 15³?", options: ["3375", "225", "3125", "3500"], correctAnswer: 0 },
+                    { question: "What is 900 ÷ 30?", options: ["30", "25", "35", "40"], correctAnswer: 0 },
+                    { question: "What is 62 × 5?", options: ["310", "300", "320", "290"], correctAnswer: 0 },
+                    { question: "What is 70% of 240?", options: ["168", "160", "180", "150"], correctAnswer: 0 },
+                    { question: "What is 16³?", options: ["4096", "256", "3844", "4224"], correctAnswer: 0 },
+                    { question: "What is 1024 ÷ 32?", options: ["32", "28", "36", "30"], correctAnswer: 0 },
+                    { question: "What is 75 × 4?", options: ["300", "280", "320", "260"], correctAnswer: 0 },
+                    { question: "What is 55% of 180?", options: ["99", "90", "100", "110"], correctAnswer: 0 },
+                    { question: "What is 17³?", options: ["4913", "289", "4624", "5100"], correctAnswer: 0 },
+                    { question: "What is 1156 ÷ 34?", options: ["34", "30", "38", "32"], correctAnswer: 0 },
+                    { question: "What is 84 × 5?", options: ["420", "400", "440", "380"], correctAnswer: 0 },
+                    { question: "What is 90% of 130?", options: ["117", "110", "120", "125"], correctAnswer: 0 },
+                    { question: "What is 18³?", options: ["5832", "324", "5184", "6120"], correctAnswer: 0 },
+                    { question: "What is 1296 ÷ 36?", options: ["36", "32", "40", "34"], correctAnswer: 0 },
+                    { question: "What is 92 × 6?", options: ["552", "540", "560", "520"], correctAnswer: 0 },
+                    { question: "What is 35% of 280?", options: ["98", "90", "100", "105"], correctAnswer: 0 },
+                    { question: "What is 19³?", options: ["6859", "361", "6498", "7200"], correctAnswer: 0 },
+                    { question: "What is 1444 ÷ 38?", options: ["38", "34", "42", "36"], correctAnswer: 0 },
+                    { question: "What is 105 × 4?", options: ["420", "400", "440", "380"], correctAnswer: 0 },
+                    { question: "What is 85% of 160?", options: ["136", "130", "140", "125"], correctAnswer: 0 },
+                    { question: "What is 20³?", options: ["8000", "400", "7200", "8800"], correctAnswer: 0 },
+                    { question: "What is 1600 ÷ 40?", options: ["40", "35", "45", "50"], correctAnswer: 0 }
+                ]
+            },
+            science: {
+                title: "Science Quiz",
+                questions: [
+                    { question: "What is the chemical symbol for gold?", options: ["Au", "Ag", "Fe", "Go"], correctAnswer: 0 },
+                    { question: "Which planet is known as the Red Planet?", options: ["Mars", "Venus", "Jupiter", "Saturn"], correctAnswer: 0 },
+                    { question: "What is the hardest natural substance on Earth?", options: ["Diamond", "Gold", "Iron", "Platinum"], correctAnswer: 0 },
+                    { question: "How many bones are in the human body?", options: ["206", "200", "210", "196"], correctAnswer: 0 },
+                    { question: "What is H₂O commonly known as?", options: ["Water", "Hydrogen", "Oxygen", "Hydrogen Peroxide"], correctAnswer: 0 },
+                    { question: "What is the closest star to Earth?", options: ["Sun", "Proxima Centauri", "Alpha Centauri", "Sirius"], correctAnswer: 0 },
+                    { question: "Which gas do plants absorb from the atmosphere?", options: ["Carbon dioxide", "Oxygen", "Nitrogen", "Hydrogen"], correctAnswer: 0 },
+                    { question: "What is the speed of light in a vacuum?", options: ["299,792 km/s", "150,000 km/s", "500,000 km/s", "1,000,000 km/s"], correctAnswer: 0 },
+                    { question: "What is the main gas in Earth's atmosphere?", options: ["Nitrogen", "Oxygen", "Carbon dioxide", "Argon"], correctAnswer: 0 },
+                    { question: "Which organ pumps blood throughout the body?", options: ["Heart", "Liver", "Lungs", "Brain"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for oxygen?", options: ["O", "Ox", "Og", "Oy"], correctAnswer: 0 },
+                    { question: "Which planet is known as the 'Gas Giant'?", options: ["Jupiter", "Mars", "Venus", "Mercury"], correctAnswer: 0 },
+                    { question: "What is the main component of the Sun?", options: ["Hydrogen", "Helium", "Oxygen", "Carbon"], correctAnswer: 0 },
+                    { question: "Which organ is responsible for filtering blood in the human body?", options: ["Kidneys", "Liver", "Heart", "Lungs"], correctAnswer: 0 },
+                    { question: "What is the chemical formula for carbon dioxide?", options: ["CO₂", "CO", "C₂O", "C₂O₂"], correctAnswer: 0 },
+                    { question: "Which gas is most abundant in Earth's atmosphere?", options: ["Nitrogen", "Oxygen", "Argon", "Carbon Dioxide"], correctAnswer: 0 },
+                    { question: "What is the study of fossils called?", options: ["Paleontology", "Archaeology", "Geology", "Biology"], correctAnswer: 0 },
+                    { question: "Which vitamin is essential for blood clotting?", options: ["Vitamin K", "Vitamin C", "Vitamin D", "Vitamin A"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for sodium?", options: ["Na", "So", "Sd", "Sm"], correctAnswer: 0 },
+                    { question: "Which planet has the most moons?", options: ["Saturn", "Jupiter", "Uranus", "Neptune"], correctAnswer: 0 },
+                    { question: "What is the largest organ in the human body?", options: ["Skin", "Liver", "Brain", "Heart"], correctAnswer: 0 },
+                    { question: "Which element has the atomic number 6?", options: ["Carbon", "Oxygen", "Nitrogen", "Hydrogen"], correctAnswer: 0 },
+                    { question: "What is the process by which plants release water vapor?", options: ["Transpiration", "Photosynthesis", "Respiration", "Evaporation"], correctAnswer: 0 },
+                    { question: "Which blood type is known as the universal recipient?", options: ["AB+", "O-", "A+", "B-"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for iron?", options: ["Fe", "Ir", "In", "Fi"], correctAnswer: 0 },
+                    { question: "Which planet is closest to the Sun?", options: ["Mercury", "Venus", "Earth", "Mars"], correctAnswer: 0 },
+                    { question: "What is the study of earthquakes called?", options: ["Seismology", "Volcanology", "Meteorology", "Geology"], correctAnswer: 0 },
+                    { question: "Which vitamin is produced when sunlight hits the skin?", options: ["Vitamin D", "Vitamin C", "Vitamin A", "Vitamin B12"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for gold?", options: ["Au", "Ag", "Go", "Gd"], correctAnswer: 0 },
+                    { question: "Which gas is responsible for the greenhouse effect?", options: ["Carbon Dioxide", "Oxygen", "Nitrogen", "Helium"], correctAnswer: 0 },
+                    { question: "What is the largest planet in our solar system?", options: ["Jupiter", "Saturn", "Neptune", "Uranus"], correctAnswer: 0 },
+                    { question: "Which element is essential for combustion?", options: ["Oxygen", "Hydrogen", "Nitrogen", "Carbon"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for potassium?", options: ["K", "P", "Po", "Pt"], correctAnswer: 0 },
+                    { question: "Which planet is known for its rings?", options: ["Saturn", "Jupiter", "Uranus", "Neptune"], correctAnswer: 0 },
+                    { question: "What is the study of insects called?", options: ["Entomology", "Ornithology", "Herpetology", "Ichthyology"], correctAnswer: 0 },
+                    { question: "Which vitamin deficiency causes scurvy?", options: ["Vitamin C", "Vitamin D", "Vitamin A", "Vitamin B12"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for silver?", options: ["Ag", "Au", "Si", "Sv"], correctAnswer: 0 },
+                    { question: "Which gas do humans breathe out?", options: ["Carbon Dioxide", "Oxygen", "Nitrogen", "Hydrogen"], correctAnswer: 0 },
+                    { question: "What is the hottest planet in our solar system?", options: ["Venus", "Mercury", "Mars", "Jupiter"], correctAnswer: 0 },
+                    { question: "Which element is liquid at room temperature?", options: ["Mercury", "Bromine", "Gallium", "All of the above"], correctAnswer: 3 },
+                    { question: "What is the chemical symbol for lead?", options: ["Pb", "Ld", "Le", "Pl"], correctAnswer: 0 },
+                    { question: "Which planet has the Great Red Spot?", options: ["Jupiter", "Saturn", "Mars", "Venus"], correctAnswer: 0 },
+                    { question: "What is the study of birds called?", options: ["Ornithology", "Entomology", "Herpetology", "Mammalogy"], correctAnswer: 0 },
+                    { question: "Which vitamin is essential for vision?", options: ["Vitamin A", "Vitamin C", "Vitamin D", "Vitamin E"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for copper?", options: ["Cu", "Co", "Cp", "Cr"], correctAnswer: 0 },
+                    { question: "Which gas is used in balloons to make them float?", options: ["Helium", "Hydrogen", "Oxygen", "Nitrogen"], correctAnswer: 0 },
+                    { question: "What is the smallest planet in our solar system?", options: ["Mercury", "Mars", "Venus", "Earth"], correctAnswer: 0 },
+                    { question: "Which element is the most abundant in the universe?", options: ["Hydrogen", "Helium", "Oxygen", "Carbon"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for mercury?", options: ["Hg", "Me", "My", "Mr"], correctAnswer: 0 },
+                    { question: "Which planet is known as the 'Red Planet'?", options: ["Mars", "Venus", "Jupiter", "Saturn"], correctAnswer: 0 },
+                    { question: "What is the study of fungi called?", options: ["Mycology", "Botany", "Zoology", "Biology"], correctAnswer: 0 },
+                    { question: "Which vitamin deficiency causes rickets?", options: ["Vitamin D", "Vitamin C", "Vitamin A", "Vitamin B12"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for tin?", options: ["Sn", "Ti", "Tn", "Ts"], correctAnswer: 0 },
+                    { question: "Which gas is essential for photosynthesis?", options: ["Carbon Dioxide", "Oxygen", "Nitrogen", "Hydrogen"], correctAnswer: 0 },
+                    { question: "What is the largest moon in our solar system?", options: ["Ganymede", "Titan", "Callisto", "Io"], correctAnswer: 0 },
+                    { question: "Which element is the main component of organic compounds?", options: ["Carbon", "Hydrogen", "Oxygen", "Nitrogen"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for tungsten?", options: ["W", "Tu", "Tg", "Tn"], correctAnswer: 0 },
+                    { question: "Which planet has the most elliptical orbit?", options: ["Mercury", "Venus", "Earth", "Mars"], correctAnswer: 0 },
+                    { question: "What is the study of fish called?", options: ["Ichthyology", "Ornithology", "Herpetology", "Entomology"], correctAnswer: 0 },
+                    { question: "Which vitamin is also known as ascorbic acid?", options: ["Vitamin C", "Vitamin A", "Vitamin B", "Vitamin D"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for platinum?", options: ["Pt", "Pl", "Pn", "Pm"], correctAnswer: 0 },
+                    { question: "Which gas is known as laughing gas?", options: ["Nitrous Oxide", "Carbon Dioxide", "Oxygen", "Helium"], correctAnswer: 0 },
+                    { question: "What is the brightest star in the night sky?", options: ["Sirius", "Canopus", "Alpha Centauri", "Arcturus"], correctAnswer: 0 },
+                    { question: "Which element is used in nuclear reactors?", options: ["Uranium", "Plutonium", "Radium", "All of the above"], correctAnswer: 3 },
+                    { question: "What is the chemical symbol for nickel?", options: ["Ni", "Nk", "Nc", "Ne"], correctAnswer: 0 },
+                    { question: "Which planet has the shortest day?", options: ["Jupiter", "Saturn", "Uranus", "Neptune"], correctAnswer: 0 },
+                    { question: "What is the study of mammals called?", options: ["Mammalogy", "Ornithology", "Herpetology", "Ichthyology"], correctAnswer: 0 },
+                    { question: "Which vitamin is produced by the human body when exposed to sunlight?", options: ["Vitamin D", "Vitamin C", "Vitamin A", "Vitamin K"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for silicon?", options: ["Si", "Sl", "Sn", "Sc"], correctAnswer: 0 },
+                    { question: "Which gas is used in fire extinguishers?", options: ["Carbon Dioxide", "Oxygen", "Nitrogen", "Helium"], correctAnswer: 0 },
+                    { question: "What is the closest galaxy to the Milky Way?", options: ["Andromeda", "Triangulum", "Large Magellanic Cloud", "Small Magellanic Cloud"], correctAnswer: 0 },
+                    { question: "Which element is the lightest?", options: ["Hydrogen", "Helium", "Lithium", "Beryllium"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for cobalt?", options: ["Co", "Cb", "Ct", "Cl"], correctAnswer: 0 },
+                    { question: "Which planet has the longest day?", options: ["Venus", "Mercury", "Mars", "Jupiter"], correctAnswer: 0 },
+                    { question: "What is the study of the nervous system called?", options: ["Neurology", "Cardiology", "Psychology", "Biology"], correctAnswer: 0 },
+                    { question: "Which vitamin deficiency causes beriberi?", options: ["Vitamin B1", "Vitamin C", "Vitamin D", "Vitamin A"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for zinc?", options: ["Zn", "Zi", "Zc", "Zr"], correctAnswer: 0 },
+                    { question: "Which gas is used in the Haber process to make ammonia?", options: ["Nitrogen", "Hydrogen", "Oxygen", "Carbon Dioxide"], correctAnswer: 0 },
+                    { question: "What is the study of the universe called?", options: ["Cosmology", "Astronomy", "Astrology", "Physics"], correctAnswer: 0 },
+                    { question: "Which element is used in making computer chips?", options: ["Silicon", "Germanium", "Gallium", "All of the above"], correctAnswer: 3 },
+                    { question: "What is the chemical symbol for phosphorus?", options: ["P", "Ph", "Ps", "Po"], correctAnswer: 0 },
+                    { question: "Which planet is known for its tilted axis?", options: ["Uranus", "Saturn", "Jupiter", "Neptune"], correctAnswer: 0 },
+                    { question: "What is the study of animal behavior called?", options: ["Ethology", "Ecology", "Zoology", "Biology"], correctAnswer: 0 },
+                    { question: "Which vitamin is essential for calcium absorption?", options: ["Vitamin D", "Vitamin C", "Vitamin A", "Vitamin K"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for sulfur?", options: ["S", "Su", "Sl", "Sr"], correctAnswer: 0 },
+                    { question: "Which gas is used in neon signs?", options: ["Neon", "Argon", "Xenon", "All of the above"], correctAnswer: 3 },
+                    { question: "What is the study of the classification of organisms called?", options: ["Taxonomy", "Biology", "Ecology", "Genetics"], correctAnswer: 0 },
+                    { question: "Which element is the most abundant in the human body?", options: ["Oxygen", "Carbon", "Hydrogen", "Nitrogen"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for chlorine?", options: ["Cl", "Ch", "C", "Cr"], correctAnswer: 0 },
+                    { question: "Which planet has the most volcanic activity?", options: ["Venus", "Mars", "Earth", "Io (moon of Jupiter)"], correctAnswer: 3 },
+                    { question: "What is the study of the structure of the body called?", options: ["Anatomy", "Physiology", "Biology", "Pathology"], correctAnswer: 0 },
+                    { question: "Which vitamin is an antioxidant?", options: ["Vitamin E", "Vitamin C", "Vitamin A", "All of the above"], correctAnswer: 3 },
+                    { question: "What is the chemical symbol for calcium?", options: ["Ca", "Cl", "Cm", "C"], correctAnswer: 0 },
+                    { question: "Which gas is responsible for the ozone layer?", options: ["Ozone", "Oxygen", "Nitrogen", "Carbon Dioxide"], correctAnswer: 0 },
+                    { question: "What is the study of the function of the body called?", options: ["Physiology", "Anatomy", "Biology", "Pathology"], correctAnswer: 0 },
+                    { question: "Which element is used in fluorescent lights?", options: ["Mercury", "Neon", "Argon", "Xenon"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for manganese?", options: ["Mn", "Mg", "Ma", "Mh"], correctAnswer: 0 },
+                    { question: "Which planet is known as the 'Ice Giant'?", options: ["Uranus", "Neptune", "Saturn", "Jupiter"], correctAnswer: 0 },
+                    { question: "What is the study of cancer called?", options: ["Oncology", "Cardiology", "Neurology", "Pathology"], correctAnswer: 0 },
+                    { question: "Which vitamin deficiency causes pellagra?", options: ["Vitamin B3", "Vitamin C", "Vitamin D", "Vitamin A"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for aluminum?", options: ["Al", "Am", "An", "Au"], correctAnswer: 0 },
+                    { question: "Which gas is used in refrigerators?", options: ["Chlorofluorocarbons", "Ammonia", "Carbon Dioxide", "All of the above"], correctAnswer: 3 },
+                    { question: "What is the study of heredity called?", options: ["Genetics", "Evolution", "Biology", "Ecology"], correctAnswer: 0 },
+                    { question: "Which element is the primary component of the Sun?", options: ["Hydrogen", "Helium", "Oxygen", "Carbon"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for barium?", options: ["Ba", "Br", "Bi", "Bm"], correctAnswer: 0 },
+                    { question: "Which planet has the most extensive ring system?", options: ["Saturn", "Jupiter", "Uranus", "Neptune"], correctAnswer: 0 },
+                    { question: "What is the study of the immune system called?", options: ["Immunology", "Hematology", "Oncology", "Pathology"], correctAnswer: 0 },
+                    { question: "Which vitamin is essential for DNA synthesis?", options: ["Folate", "Vitamin C", "Vitamin D", "Vitamin A"], correctAnswer: 0 },
+                    { question: "What is the chemical symbol for chromium?", options: ["Cr", "Ch", "Cm", "Co"], correctAnswer: 0 },
+                    { question: "Which gas is used in welding?", options: ["Acetylene", "Oxygen", "Nitrogen", "Helium"], correctAnswer: 0 },
+                    { question: "What is the study of the Earth's physical structure called?", options: ["Geology", "Geography", "Meteorology", "Astronomy"], correctAnswer: 0 },
+                    { question: "Which element is the main component of diamonds?", options: ["Carbon", "Silicon", "Oxygen", "Nitrogen"], correctAnswer: 0 }
+                    // Additional science questions would continue here to reach 100...
+                ]
+            },
+            history: {
+                title: "History Quiz",
+                questions: [
+                    { question: "In which year did World War II end?", options: ["1945", "1939", "1941", "1947"], correctAnswer: 0 },
+                    { question: "Who was the first President of the United States?", options: ["George Washington", "Thomas Jefferson", "Abraham Lincoln", "John Adams"], correctAnswer: 0 },
+                    { question: "Which ancient civilization built the pyramids?", options: ["Egyptians", "Greeks", "Romans", "Mayans"], correctAnswer: 0 },
+                    { question: "When did the Berlin Wall fall?", options: ["1989", "1991", "1985", "1979"], correctAnswer: 0 },
+                    { question: "Who discovered America?", options: ["Christopher Columbus", "Vasco da Gama", "Marco Polo", "Ferdinand Magellan"], correctAnswer: 0 },
+                    { question: "Which empire was ruled by Julius Caesar?", options: ["Roman Empire", "Greek Empire", "Persian Empire", "Ottoman Empire"], correctAnswer: 0 },
+                    { question: "When was the Declaration of Independence signed?", options: ["1776", "1789", "1792", "1801"], correctAnswer: 0 },
+                    { question: "Who was the first woman to win a Nobel Prize?", options: ["Marie Curie", "Rosalind Franklin", "Florence Nightingale", "Jane Addams"], correctAnswer: 0 },
+                    { question: "In which year did the Titanic sink?", options: ["1912", "1905", "1920", "1898"], correctAnswer: 0 },
+                    { question: "Who painted the Mona Lisa?", options: ["Leonardo da Vinci", "Michelangelo", "Raphael", "Donatello"], correctAnswer: 0 },
+                    { question: "Who was the first Emperor of China?", options: ["Qin Shi Huang", "Han Wudi", "Tang Taizong", "Kangxi"], correctAnswer: 0 },
+                    { question: "In which year did the American Civil War begin?", options: ["1861", "1865", "1859", "1863"], correctAnswer: 0 },
+                    { question: "Who was the leader of the Soviet Union during World War II?", options: ["Joseph Stalin", "Vladimir Lenin", "Nikita Khrushchev", "Leon Trotsky"], correctAnswer: 0 },
+                    { question: "Which ancient wonder was located in Alexandria?", options: ["Lighthouse", "Hanging Gardens", "Colossus", "Mausoleum"], correctAnswer: 0 },
+                    { question: "Who was the Pharaoh during the Exodus?", options: ["Ramses II", "Tutankhamun", "Cleopatra", "Akhenaten"], correctAnswer: 0 },
+                    { question: "When did the Cold War officially end?", options: ["1991", "1989", "1990", "1985"], correctAnswer: 0 },
+                    { question: "Who invented the printing press?", options: ["Johannes Gutenberg", "Leonardo da Vinci", "Galileo Galilei", "Isaac Newton"], correctAnswer: 0 },
+                    { question: "Which year did World War I begin?", options: ["1914", "1918", "1915", "1912"], correctAnswer: 0 },
+                    { question: "Who was the first Emperor of Rome?", options: ["Augustus", "Julius Caesar", "Nero", "Constantine"], correctAnswer: 0 },
+                    { question: "When was the Magna Carta signed?", options: ["1215", "1066", "1492", "1776"], correctAnswer: 0 },
+                    { question: "Who was the first female Prime Minister of the UK?", options: ["Margaret Thatcher", "Theresa May", "Queen Elizabeth I", "Indira Gandhi"], correctAnswer: 0 },
+                    { question: "Which civilization invented paper?", options: ["Chinese", "Egyptian", "Greek", "Roman"], correctAnswer: 0 },
+                    { question: "Who wrote 'The Communist Manifesto'?", options: ["Karl Marx and Friedrich Engels", "Vladimir Lenin", "Joseph Stalin", "Adam Smith"], correctAnswer: 0 },
+                    { question: "When did the French Revolution begin?", options: ["1789", "1776", "1799", "1812"], correctAnswer: 0 },
+                    { question: "Who was the last Tsar of Russia?", options: ["Nicholas II", "Peter the Great", "Catherine the Great", "Alexander II"], correctAnswer: 0 },
+                    { question: "Which empire was founded by Cyrus the Great?", options: ["Persian Empire", "Roman Empire", "Greek Empire", "Ottoman Empire"], correctAnswer: 0 },
+                    { question: "When was the United Nations founded?", options: ["1945", "1919", "1955", "1939"], correctAnswer: 0 },
+                    { question: "Who discovered penicillin?", options: ["Alexander Fleming", "Louis Pasteur", "Marie Curie", "Albert Einstein"], correctAnswer: 0 },
+                    { question: "Which year did the Vietnam War end?", options: ["1975", "1968", "1973", "1980"], correctAnswer: 0 },
+                    { question: "Who was the first African President of South Africa?", options: ["Nelson Mandela", "Thabo Mbeki", "Jacob Zuma", "Desmond Tutu"], correctAnswer: 0 },
+                    { question: "When did the Industrial Revolution begin?", options: ["1760", "1800", "1700", "1850"], correctAnswer: 0 },
+                    { question: "Who built the Taj Mahal?", options: ["Shah Jahan", "Akbar", "Aurangzeb", "Babur"], correctAnswer: 0 },
+                    { question: "Which civilization built Machu Picchu?", options: ["Inca", "Maya", "Aztec", "Olmec"], correctAnswer: 0 },
+                    { question: "When did the Korean War begin?", options: ["1950", "1945", "1955", "1960"], correctAnswer: 0 },
+                    { question: "Who was the first European to reach India by sea?", options: ["Vasco da Gama", "Christopher Columbus", "Ferdinand Magellan", "Marco Polo"], correctAnswer: 0 },
+                    { question: "Which empire was ruled by Ashoka the Great?", options: ["Maurya Empire", "Gupta Empire", "Mughal Empire", "British Empire"], correctAnswer: 0 },
+                    { question: "When did the Russian Revolution occur?", options: ["1917", "1905", "1922", "1898"], correctAnswer: 0 },
+                    { question: "Who was the first President of France?", options: ["Louis-Napoléon Bonaparte", "Charles de Gaulle", "Napoleon Bonaparte", "Louis XVI"], correctAnswer: 0 },
+                    { question: "Which civilization developed the first writing system?", options: ["Sumerian", "Egyptian", "Chinese", "Indus Valley"], correctAnswer: 0 },
+                    { question: "When did the Space Age begin?", options: ["1957", "1969", "1945", "1975"], correctAnswer: 0 },
+                    { question: "Who was the first Roman Emperor to convert to Christianity?", options: ["Constantine the Great", "Augustus", "Nero", "Julius Caesar"], correctAnswer: 0 },
+                    { question: "Which year did the Gulf War begin?", options: ["1991", "1990", "1989", "1992"], correctAnswer: 0 },
+                    { question: "Who was the first female Pharaoh of Egypt?", options: ["Hatshepsut", "Cleopatra", "Nefertiti", "Sobekneferu"], correctAnswer: 0 },
+                    { question: "When did the Byzantine Empire fall?", options: ["1453", "476", "1204", "1347"], correctAnswer: 0 },
+                    { question: "Who invented the telephone?", options: ["Alexander Graham Bell", "Thomas Edison", "Nikola Tesla", "Guglielmo Marconi"], correctAnswer: 0 },
+                    { question: "Which civilization built Stonehenge?", options: ["Neolithic Britons", "Romans", "Celts", "Vikings"], correctAnswer: 0 },
+                    { question: "When did the Protestant Reformation begin?", options: ["1517", "1492", "1453", "1603"], correctAnswer: 0 },
+                    { question: "Who was the first President of independent India?", options: ["Rajendra Prasad", "Jawaharlal Nehru", "Mahatma Gandhi", "Sardar Patel"], correctAnswer: 0 },
+                    { question: "Which empire was ruled by Suleiman the Magnificent?", options: ["Ottoman Empire", "Byzantine Empire", "Roman Empire", "Persian Empire"], correctAnswer: 0 },
+                    { question: "When did the California Gold Rush begin?", options: ["1848", "1850", "1861", "1835"], correctAnswer: 0 },
+                    { question: "Who was the first female pilot to fly solo across the Atlantic?", options: ["Amelia Earhart", "Bessie Coleman", "Harriet Quimby", "Jacqueline Cochran"], correctAnswer: 0 },
+                    { question: "Which civilization built the city of Carthage?", options: ["Phoenicians", "Romans", "Greeks", "Egyptians"], correctAnswer: 0 },
+                    { question: "When did the Cuban Missile Crisis occur?", options: ["1962", "1959", "1965", "1971"], correctAnswer: 0 },
+                    { question: "Who was the first European to cross the Pacific Ocean?", options: ["Ferdinand Magellan", "Christopher Columbus", "Vasco da Gama", "James Cook"], correctAnswer: 0 },
+                    { question: "Which empire was founded by Genghis Khan?", options: ["Mongol Empire", "Chinese Empire", "Russian Empire", "Persian Empire"], correctAnswer: 0 },
+                    { question: "When did the Irish Potato Famine begin?", options: ["1845", "1850", "1830", "1860"], correctAnswer: 0 },
+                    { question: "Who was the first female Supreme Court Justice in the US?", options: ["Sandra Day O'Connor", "Ruth Bader Ginsburg", "Sonia Sotomayor", "Elena Kagan"], correctAnswer: 0 },
+                    { question: "Which civilization built the Great Zimbabwe?", options: ["Shona", "Zulu", "Swahili", "Bantu"], correctAnswer: 0 },
+                    { question: "When did the Renaissance begin?", options: ["14th century", "15th century", "16th century", "13th century"], correctAnswer: 0 },
+                    { question: "Who was the first European to reach Japan?", options: ["Portuguese traders", "Spanish explorers", "Dutch merchants", "British sailors"], correctAnswer: 0 },
+                    { question: "Which empire was ruled by Charlemagne?", options: ["Carolingian Empire", "Holy Roman Empire", "Byzantine Empire", "Frankish Empire"], correctAnswer: 0 },
+                    { question: "When did the American Revolution begin?", options: ["1775", "1776", "1781", "1765"], correctAnswer: 0 },
+                    { question: "Who was the first female astronaut?", options: ["Valentina Tereshkova", "Sally Ride", "Mae Jemison", "Christa McAuliffe"], correctAnswer: 0 },
+                    { question: "Which civilization built the Moai statues?", options: ["Rapa Nui", "Inca", "Maya", "Aztec"], correctAnswer: 0 },
+                    { question: "When did the Black Death peak in Europe?", options: ["1347-1351", "1300-1305", "1400-1405", "1200-1205"], correctAnswer: 0 },
+                    { question: "Who was the first European to see the Pacific Ocean?", options: ["Vasco Núñez de Balboa", "Christopher Columbus", "Ferdinand Magellan", "Hernán Cortés"], correctAnswer: 0 },
+                    { question: "Which empire was ruled by Hammurabi?", options: ["Babylonian Empire", "Assyrian Empire", "Persian Empire", "Sumerian Empire"], correctAnswer: 0 },
+                    { question: "When did the Women's Suffrage movement succeed in the US?", options: ["1920", "1918", "1928", "1945"], correctAnswer: 0 },
+                    { question: "Who was the first female Prime Minister in the world?", options: ["Sirimavo Bandaranaike", "Indira Gandhi", "Margaret Thatcher", "Golda Meir"], correctAnswer: 0 },
+                    { question: "Which civilization invented gunpowder?", options: ["Chinese", "Arabs", "Indians", "Greeks"], correctAnswer: 0 },
+                    { question: "When did the Holocaust occur?", options: ["1941-1945", "1939-1945", "1933-1945", "1940-1944"], correctAnswer: 0 },
+                    { question: "Who was the first European to reach Australia?", options: ["Dutch explorers", "British explorers", "Portuguese explorers", "Spanish explorers"], correctAnswer: 0 },
+                    { question: "Which empire was ruled by Justinian I?", options: ["Byzantine Empire", "Roman Empire", "Ottoman Empire", "Holy Roman Empire"], correctAnswer: 0 },
+                    { question: "When did the Civil Rights Act pass in the US?", options: ["1964", "1965", "1963", "1968"], correctAnswer: 0 },
+                    { question: "Who was the first female Nobel Prize winner?", options: ["Marie Curie", "Bertha von Suttner", "Mother Teresa", "Pearl S. Buck"], correctAnswer: 0 },
+                    { question: "Which civilization built the city of Petra?", options: ["Nabateans", "Romans", "Greeks", "Egyptians"], correctAnswer: 0 },
+                    { question: "When did the Internet become publicly available?", options: ["1991", "1989", "1995", "2000"], correctAnswer: 0 },
+                    { question: "Who was the first European to cross the Sahara desert?", options: ["Leo Africanus", "Ibn Battuta", "Marco Polo", "Mungo Park"], correctAnswer: 0 },
+                    { question: "Which empire was ruled by Tamerlane?", options: ["Timurid Empire", "Mongol Empire", "Ottoman Empire", "Persian Empire"], correctAnswer: 0 },
+                    { question: "When did the American Civil Rights Movement begin?", options: ["1954", "1960", "1945", "1970"], correctAnswer: 0 },
+                    { question: "Who was the first female Secretary of State in the US?", options: ["Madeleine Albright", "Condoleezza Rice", "Hillary Clinton", "Colin Powell"], correctAnswer: 0 },
+                    { question: "Which civilization built the city of Timbuktu?", options: ["Mali Empire", "Ghana Empire", "Songhai Empire", "Benin Empire"], correctAnswer: 0 },
+                    { question: "When did the European Union form?", options: ["1993", "1957", "1973", "2002"], correctAnswer: 0 },
+                    { question: "Who was the first European to reach North America?", options: ["Leif Erikson", "Christopher Columbus", "John Cabot", "Amerigo Vespucci"], correctAnswer: 0 },
+                    { question: "Which empire was ruled by Pachacuti?", options: ["Inca Empire", "Aztec Empire", "Maya Empire", "Olmec Empire"], correctAnswer: 0 },
+                    { question: "When did the Russian Civil War end?", options: ["1922", "1917", "1920", "1925"], correctAnswer: 0 },
+                    { question: "Who was the first female president in Africa?", options: ["Ellen Johnson Sirleaf", "Joyce Banda", "Catherine Samba-Panza", "Ameenah Gurib-Fakim"], correctAnswer: 0 },
+                    { question: "Which civilization built the city of Angkor Wat?", options: ["Khmer Empire", "Thai Kingdom", "Vietnamese Empire", "Burmese Empire"], correctAnswer: 0 },
+                    { question: "When did the Vietnam War begin for the US?", options: ["1965", "1955", "1961", "1970"], correctAnswer: 0 },
+                    { question: "Who was the first European to sail around the Cape of Good Hope?", options: ["Bartolomeu Dias", "Vasco da Gama", "Christopher Columbus", "Ferdinand Magellan"], correctAnswer: 0 },
+                    { question: "Which empire was ruled by Montezuma II?", options: ["Aztec Empire", "Inca Empire", "Maya Empire", "Olmec Empire"], correctAnswer: 0 },
+                    { question: "When did the Indian Independence movement succeed?", options: ["1947", "1945", "1950", "1935"], correctAnswer: 0 },
+                    { question: "Who was the first female prime minister of Israel?", options: ["Golda Meir", "Tzipi Livni", "Shimon Peres", "David Ben-Gurion"], correctAnswer: 0 },
+                    { question: "Which civilization built the city of Chichen Itza?", options: ["Maya", "Aztec", "Inca", "Olmec"], correctAnswer: 0 },
+                    { question: "When did the Korean War end?", options: ["1953", "1950", "1955", "1960"], correctAnswer: 0 },
+                    { question: "Who was the first European to reach Brazil?", options: ["Pedro Álvares Cabral", "Christopher Columbus", "Amerigo Vespucci", "Ferdinand Magellan"], correctAnswer: 0 },
+                    { question: "Which empire was ruled by Darius the Great?", options: ["Persian Empire", "Greek Empire", "Roman Empire", "Egyptian Empire"], correctAnswer: 0 },
+                    { question: "When did the Berlin Airlift occur?", options: ["1948-1949", "1945-1946", "1950-1951", "1961-1962"], correctAnswer: 0 },
+                    { question: "Who was the first female president of Argentina?", options: ["Isabel Perón", "Cristina Fernández", "Evita Perón", "Dilma Rousseff"], correctAnswer: 0 },
+                    { question: "Which civilization built the city of Great Zimbabwe?", options: ["Shona", "Zulu", "Xhosa", "Swazi"], correctAnswer: 0 },
+                    { question: "When did the Cuban Revolution succeed?", options: ["1959", "1961", "1956", "1965"], correctAnswer: 0 },
+                    { question: "Who was the first European to reach the Mississippi River?", options: ["Hernando de Soto", "Francisco Vázquez de Coronado", "Juan Ponce de León", "Álvar Núñez Cabeza de Vaca"], correctAnswer: 0 },
+                    { question: "Which empire was ruled by Kublai Khan?", options: ["Yuan Dynasty", "Mongol Empire", "Chinese Empire", "Japanese Empire"], correctAnswer: 0 },
+                    { question: "When did the Iranian Revolution occur?", options: ["1979", "1980", "1975", "1985"], correctAnswer: 0 },
+                    { question: "Who was the first female chancellor of Germany?", options: ["Angela Merkel", "Helmut Kohl", "Gerhard Schröder", "Konrad Adenauer"], correctAnswer: 0 },
+                    { question: "Which civilization built the city of Palenque?", options: ["Maya", "Aztec", "Inca", "Olmec"], correctAnswer: 0 }
+                    // Additional history questions would continue here to reach 100...
+                ]
+            },
+            geography: {
+                title: "Geography Quiz",
+                questions: [
+                    { question: "What is the longest river in the world?", options: ["Nile", "Amazon", "Yangtze", "Mississippi"], correctAnswer: 0 },
+                    { question: "Which country has the largest population?", options: ["China", "India", "United States", "Indonesia"], correctAnswer: 0 },
+                    { question: "What is the smallest country in the world?", options: ["Vatican City", "Monaco", "San Marino", "Liechtenstein"], correctAnswer: 0 },
+                    { question: "Which desert is the largest in the world?", options: ["Sahara", "Arabian", "Gobi", "Kalahari"], correctAnswer: 0 },
+                    { question: "What is the capital of Australia?", options: ["Canberra", "Sydney", "Melbourne", "Perth"], correctAnswer: 0 },
+                    { question: "Which mountain is the highest in the world?", options: ["Mount Everest", "K2", "Kangchenjunga", "Lhotse"], correctAnswer: 0 },
+                    { question: "How many continents are there?", options: ["7", "5", "6", "8"], correctAnswer: 0 },
+                    { question: "Which ocean is the largest?", options: ["Pacific", "Atlantic", "Indian", "Arctic"], correctAnswer: 0 },
+                    { question: "What is the capital of Japan?", options: ["Tokyo", "Kyoto", "Osaka", "Nagoya"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of the Rising Sun?", options: ["Japan", "China", "Thailand", "South Korea"], correctAnswer: 0 },
+                    { question: "What is the capital of Brazil?", options: ["Brasília", "Rio de Janeiro", "São Paulo", "Buenos Aires"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of the Midnight Sun?", options: ["Norway", "Sweden", "Finland", "Iceland"], correctAnswer: 0 },
+                    { question: "What is the largest city in the world by population?", options: ["Tokyo", "Delhi", "Shanghai", "São Paulo"], correctAnswer: 0 },
+                    { question: "Which river flows through Paris?", options: ["Seine", "Thames", "Danube", "Rhine"], correctAnswer: 0 },
+                    { question: "What is the capital of Canada?", options: ["Ottawa", "Toronto", "Vancouver", "Montreal"], correctAnswer: 0 },
+                    { question: "Which country has the most time zones?", options: ["France", "Russia", "United States", "China"], correctAnswer: 0 },
+                    { question: "What is the largest island in the world?", options: ["Greenland", "New Guinea", "Borneo", "Madagascar"], correctAnswer: 0 },
+                    { question: "Which city is known as the Big Apple?", options: ["New York", "Chicago", "Los Angeles", "Boston"], correctAnswer: 0 },
+                    { question: "What is the capital of South Africa?", options: ["Pretoria", "Cape Town", "Johannesburg", "Durban"], correctAnswer: 0 },
+                    { question: "Which country is shaped like a boot?", options: ["Italy", "Greece", "Spain", "Turkey"], correctAnswer: 0 },
+                    { question: "What is the largest country by area?", options: ["Russia", "Canada", "China", "United States"], correctAnswer: 0 },
+                    { question: "Which continent is the smallest?", options: ["Australia", "Europe", "Antarctica", "South America"], correctAnswer: 0 },
+                    { question: "What is the capital of Egypt?", options: ["Cairo", "Alexandria", "Giza", "Luxor"], correctAnswer: 0 },
+                    { question: "Which river is the longest in South America?", options: ["Amazon", "Paraná", "Orinoco", "Madeira"], correctAnswer: 0 },
+                    { question: "What is the capital of South Korea?", options: ["Seoul", "Busan", "Incheon", "Daegu"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of the Long White Cloud?", options: ["New Zealand", "Australia", "Iceland", "Japan"], correctAnswer: 0 },
+                    { question: "What is the largest city in Africa?", options: ["Lagos", "Cairo", "Kinshasa", "Johannesburg"], correctAnswer: 0 },
+                    { question: "Which mountain range separates Europe and Asia?", options: ["Ural Mountains", "Alps", "Caucasus", "Carpathians"], correctAnswer: 0 },
+                    { question: "What is the capital of Argentina?", options: ["Buenos Aires", "Córdoba", "Rosario", "Mendoza"], correctAnswer: 0 },
+                    { question: "Which country has the longest coastline?", options: ["Canada", "Indonesia", "Russia", "Philippines"], correctAnswer: 0 },
+                    { question: "What is the largest desert in Asia?", options: ["Gobi Desert", "Arabian Desert", "Karakum Desert", "Thar Desert"], correctAnswer: 0 },
+                    { question: "Which river flows through London?", options: ["Thames", "Severn", "Mersey", "Clyde"], correctAnswer: 0 },
+                    { question: "What is the capital of Thailand?", options: ["Bangkok", "Chiang Mai", "Phuket", "Pattaya"], correctAnswer: 0 },
+                    { question: "Which country is known as the Pearl of the Orient?", options: ["Philippines", "Sri Lanka", "Taiwan", "Hong Kong"], correctAnswer: 0 },
+                    { question: "What is the largest lake in Africa?", options: ["Lake Victoria", "Lake Tanganyika", "Lake Malawi", "Lake Chad"], correctAnswer: 0 },
+                    { question: "Which canal connects the Atlantic and Pacific Oceans?", options: ["Panama Canal", "Suez Canal", "Kiel Canal", "Erie Canal"], correctAnswer: 0 },
+                    { question: "What is the capital of Turkey?", options: ["Ankara", "Istanbul", "Izmir", "Antalya"], correctAnswer: 0 },
+                    { question: "Which country has the most islands?", options: ["Sweden", "Norway", "Finland", "Canada"], correctAnswer: 0 },
+                    { question: "What is the largest city in South America?", options: ["São Paulo", "Buenos Aires", "Rio de Janeiro", "Lima"], correctAnswer: 0 },
+                    { question: "Which river flows through Baghdad?", options: ["Tigris", "Euphrates", "Nile", "Jordan"], correctAnswer: 0 },
+                    { question: "What is the capital of Vietnam?", options: ["Hanoi", "Ho Chi Minh City", "Da Nang", "Hai Phong"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of Fire and Ice?", options: ["Iceland", "Norway", "Greenland", "New Zealand"], correctAnswer: 0 },
+                    { question: "What is the largest bay in the world?", options: ["Bay of Bengal", "Hudson Bay", "Bay of Biscay", "Chesapeake Bay"], correctAnswer: 0 },
+                    { question: "Which mountain is the highest in Africa?", options: ["Mount Kilimanjaro", "Mount Kenya", "Mount Stanley", "Mount Meru"], correctAnswer: 0 },
+                    { question: "What is the capital of Saudi Arabia?", options: ["Riyadh", "Jeddah", "Mecca", "Medina"], correctAnswer: 0 },
+                    { question: "Which country has the largest forest area?", options: ["Russia", "Brazil", "Canada", "United States"], correctAnswer: 0 },
+                    { question: "What is the largest city in Australia?", options: ["Sydney", "Melbourne", "Brisbane", "Perth"], correctAnswer: 0 },
+                    { question: "Which river flows through Vienna?", options: ["Danube", "Rhine", "Elbe", "Vltava"], correctAnswer: 0 },
+                    { question: "What is the capital of Nigeria?", options: ["Abuja", "Lagos", "Kano", "Ibadan"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of the Rising Sun?", options: ["Japan", "China", "South Korea", "Taiwan"], correctAnswer: 0 },
+                    { question: "What is the largest peninsula in the world?", options: ["Arabian Peninsula", "Indian Peninsula", "Scandinavian Peninsula", "Iberian Peninsula"], correctAnswer: 0 },
+                    { question: "Which mountain range runs along the west coast of South America?", options: ["Andes", "Rockies", "Alps", "Himalayas"], correctAnswer: 0 },
+                    { question: "What is the capital of Pakistan?", options: ["Islamabad", "Karachi", "Lahore", "Rawalpindi"], correctAnswer: 0 },
+                    { question: "Which country has the most volcanoes?", options: ["Indonesia", "Japan", "United States", "Russia"], correctAnswer: 0 },
+                    { question: "What is the largest city in the Middle East?", options: ["Cairo", "Tehran", "Istanbul", "Riyadh"], correctAnswer: 0 },
+                    { question: "Which river flows through Rome?", options: ["Tiber", "Po", "Arno", "Adige"], correctAnswer: 0 },
+                    { question: "What is the capital of Malaysia?", options: ["Kuala Lumpur", "Singapore", "Bangkok", "Jakarta"], correctAnswer: 0 },
+                    { question: "Which country is known as the Emerald Isle?", options: ["Ireland", "New Zealand", "Sri Lanka", "Jamaica"], correctAnswer: 0 },
+                    { question: "What is the largest coral reef system?", options: ["Great Barrier Reef", "Mesoamerican Barrier Reef", "New Caledonia Barrier Reef", "Florida Reef"], correctAnswer: 0 },
+                    { question: "Which desert is located in South America?", options: ["Atacama Desert", "Sahara Desert", "Gobi Desert", "Kalahari Desert"], correctAnswer: 0 },
+                    { question: "What is the capital of Chile?", options: ["Santiago", "Buenos Aires", "Lima", "Bogotá"], correctAnswer: 0 },
+                    { question: "Which country has the most freshwater resources?", options: ["Brazil", "Russia", "Canada", "United States"], correctAnswer: 0 },
+                    { question: "What is the largest city in Canada?", options: ["Toronto", "Montreal", "Vancouver", "Calgary"], correctAnswer: 0 },
+                    { question: "Which river flows through Cairo?", options: ["Nile", "Tigris", "Euphrates", "Jordan"], correctAnswer: 0 },
+                    { question: "What is the capital of Indonesia?", options: ["Jakarta", "Bali", "Surabaya", "Bandung"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of a Thousand Lakes?", options: ["Finland", "Canada", "Sweden", "Norway"], correctAnswer: 0 },
+                    { question: "What is the largest gulf in the world?", options: ["Gulf of Mexico", "Persian Gulf", "Gulf of Guinea", "Gulf of Alaska"], correctAnswer: 0 },
+                    { question: "Which mountain is the highest in North America?", options: ["Denali", "Mount Logan", "Pico de Orizaba", "Mount Saint Elias"], correctAnswer: 0 },
+                    { question: "What is the capital of Iran?", options: ["Tehran", "Isfahan", "Mashhad", "Shiraz"], correctAnswer: 0 },
+                    { question: "Which country has the most natural lakes?", options: ["Canada", "Russia", "United States", "China"], correctAnswer: 0 },
+                    { question: "What is the largest city in India?", options: ["Mumbai", "Delhi", "Bangalore", "Kolkata"], correctAnswer: 0 },
+                    { question: "Which river flows through Moscow?", options: ["Moskva", "Volga", "Don", "Dnieper"], correctAnswer: 0 },
+                    { question: "What is the capital of the Philippines?", options: ["Manila", "Quezon City", "Cebu City", "Davao City"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of the Thunder Dragon?", options: ["Bhutan", "Nepal", "Tibet", "Myanmar"], correctAnswer: 0 },
+                    { question: "What is the largest archipelago in the world?", options: ["Indonesia", "Philippines", "Japan", "Malaysia"], correctAnswer: 0 },
+                    { question: "Which mountain range runs through Central Asia?", options: ["Himalayas", "Hindu Kush", "Pamir Mountains", "Tian Shan"], correctAnswer: 0 },
+                    { question: "What is the capital of Colombia?", options: ["Bogotá", "Medellín", "Cali", "Barranquilla"], correctAnswer: 0 },
+                    { question: "Which country has the most UNESCO World Heritage Sites?", options: ["Italy", "China", "Spain", "France"], correctAnswer: 0 },
+                    { question: "What is the largest city in China?", options: ["Shanghai", "Beijing", "Guangzhou", "Shenzhen"], correctAnswer: 0 },
+                    { question: "Which river flows through Berlin?", options: ["Spree", "Rhine", "Elbe", "Oder"], correctAnswer: 0 },
+                    { question: "What is the capital of Peru?", options: ["Lima", "Cusco", "Arequipa", "Trujillo"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of the White Elephant?", options: ["Thailand", "Myanmar", "Cambodia", "Laos"], correctAnswer: 0 },
+                    { question: "What is the largest saltwater lake in the world?", options: ["Caspian Sea", "Lake Superior", "Lake Victoria", "Lake Huron"], correctAnswer: 0 },
+                    { question: "Which desert is located in Australia?", options: ["Great Victoria Desert", "Sahara Desert", "Gobi Desert", "Kalahari Desert"], correctAnswer: 0 },
+                    { question: "What is the capital of Venezuela?", options: ["Caracas", "Maracaibo", "Valencia", "Barquisimeto"], correctAnswer: 0 },
+                    { question: "Which country has the most border countries?", options: ["China", "Russia", "Brazil", "Germany"], correctAnswer: 0 },
+                    { question: "What is the largest city in Russia?", options: ["Moscow", "Saint Petersburg", "Novosibirsk", "Yekaterinburg"], correctAnswer: 0 },
+                    { question: "Which river flows through Warsaw?", options: ["Vistula", "Oder", "Warta", "Bug"], correctAnswer: 0 },
+                    { question: "What is the capital of Bangladesh?", options: ["Dhaka", "Chittagong", "Khulna", "Rajshahi"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of the Midnight Sun?", options: ["Norway", "Sweden", "Finland", "Iceland"], correctAnswer: 0 },
+                    { question: "What is the largest freshwater lake by volume?", options: ["Lake Baikal", "Lake Superior", "Lake Victoria", "Lake Tanganyika"], correctAnswer: 0 },
+                    { question: "Which mountain is the highest in South America?", options: ["Aconcagua", "Huascarán", "Cotopaxi", "Chimborazo"], correctAnswer: 0 },
+                    { question: "What is the capital of Iraq?", options: ["Baghdad", "Basra", "Mosul", "Erbil"], correctAnswer: 0 },
+                    { question: "Which country has the most rivers?", options: ["Russia", "Brazil", "Canada", "China"], correctAnswer: 0 },
+                    { question: "What is the largest city in Mexico?", options: ["Mexico City", "Guadalajara", "Monterrey", "Puebla"], correctAnswer: 0 },
+                    { question: "Which river flows through Prague?", options: ["Vltava", "Elbe", "Danube", "Oder"], correctAnswer: 0 },
+                    { question: "What is the capital of Afghanistan?", options: ["Kabul", "Kandahar", "Herat", "Mazar-i-Sharif"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of the Golden Fleece?", options: ["Georgia", "Armenia", "Azerbaijan", "Turkey"], correctAnswer: 0 },
+                    { question: "What is the largest island in the Mediterranean Sea?", options: ["Sicily", "Sardinia", "Cyprus", "Corsica"], correctAnswer: 0 },
+                    { question: "Which mountain range runs along the border of France and Spain?", options: ["Pyrenees", "Alps", "Carpathians", "Apennines"], correctAnswer: 0 },
+                    { question: "What is the capital of Ukraine?", options: ["Kyiv", "Kharkiv", "Odesa", "Dnipro"], correctAnswer: 0 },
+                    { question: "Which country has the most coastline in Africa?", options: ["Madagascar", "Somalia", "South Africa", "Mozambique"], correctAnswer: 0 },
+                    { question: "What is the largest city in Pakistan?", options: ["Karachi", "Lahore", "Faisalabad", "Rawalpindi"], correctAnswer: 0 },
+                    { question: "Which river flows through Budapest?", options: ["Danube", "Tisza", "Sava", "Drava"], correctAnswer: 0 },
+                    { question: "What is the capital of Morocco?", options: ["Rabat", "Casablanca", "Marrakesh", "Fes"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of the Maple Leaf?", options: ["Canada", "United States", "Japan", "Norway"], correctAnswer: 0 },
+                    { question: "What is the largest waterfall in the world?", options: ["Angel Falls", "Victoria Falls", "Niagara Falls", "Iguazu Falls"], correctAnswer: 0 },
+                    { question: "Which desert is the coldest in the world?", options: ["Antarctic Desert", "Arctic Desert", "Gobi Desert", "Atacama Desert"], correctAnswer: 0 },
+                    { question: "What is the capital of Kazakhstan?", options: ["Nur-Sultan", "Almaty", "Shymkent", "Karaganda"], correctAnswer: 0 },
+                    { question: "Which country has the most active volcanoes?", options: ["Indonesia", "Japan", "United States", "Russia"], correctAnswer: 0 },
+                    { question: "What is the largest city in Turkey?", options: ["Istanbul", "Ankara", "Izmir", "Bursa"], correctAnswer: 0 },
+                    { question: "Which river flows through Lisbon?", options: ["Tagus", "Douro", "Guadiana", "Mondego"], correctAnswer: 0 },
+                    { question: "What is the capital of Algeria?", options: ["Algiers", "Oran", "Constantine", "Annaba"], correctAnswer: 0 },
+                    { question: "Which country is known as the Land of the Pharaohs?", options: ["Egypt", "Sudan", "Ethiopia", "Libya"], correctAnswer: 0 },
+                    { question: "What is the largest lake in North America?", options: ["Lake Superior", "Lake Huron", "Lake Michigan", "Great Bear Lake"], correctAnswer: 0 },
+                    { question: "Which mountain is the highest in Europe?", options: ["Mount Elbrus", "Mont Blanc", "Mount Etna", "Matterhorn"], correctAnswer: 0 },
+                    { question: "What is the capital of Kenya?", options: ["Nairobi", "Mombasa", "Kisumu", "Nakuru"], correctAnswer: 0 },
+                    { question: "Which country has the most islands in the Caribbean?", options: ["The Bahamas", "Cuba", "Jamaica", "Dominican Republic"], correctAnswer: 0 },
+                    { question: "What is the largest city in Iran?", options: ["Tehran", "Mashhad", "Isfahan", "Karaj"], correctAnswer: 0 },
+                    { question: "Which river flows through Amsterdam?", options: ["Amstel", "Rhine", "Meuse", "Scheldt"], correctAnswer: 0 }
+                    // Additional geography questions would continue here to reach 100...
+                ]
+            },
+            "oops": {
+                title: "Object Oriented Programming Structure (OOPs) Quiz",
+                questions: [
+                    { question: "What is Object-Oriented Programming?", options: ["A programming paradigm based on the concept of objects", "A programming language specifically for object creation", "A method of programming that only uses objects", "A type of programming that doesn't use functions"], correctAnswer: 0 },
+                    { question: "Which of the following is NOT a pillar of OOP?", options: ["Inheritance", "Polymorphism", "Encapsulation", "Compilation"], correctAnswer: 3 },
+                    { question: "What is encapsulation in OOP?", options: ["The bundling of data with the methods that operate on that data", "The process of creating multiple instances of a class", "The ability of an object to take many forms", "The mechanism of acquiring properties of another class"], correctAnswer: 0 },
+                    { question: "What is inheritance in OOP?", options: ["The mechanism where one class acquires the properties of another class", "The process of hiding implementation details", "The ability to define multiple methods with the same name", "The process of creating objects from classes"], correctAnswer: 0 },
+                    { question: "What is polymorphism in OOP?", options: ["The ability of an object to take many forms", "The process of bundling data and methods together", "The mechanism of reusing code from existing classes", "The process of hiding complex implementation details"], correctAnswer: 0 },
+                    { question: "What is a class in OOP?", options: ["A blueprint for creating objects", "A specific instance of an object", "A method that initializes objects", "A function that operates on objects"], correctAnswer: 0 },
+                    { question: "What is an object in OOP?", options: ["An instance of a class", "A blueprint for creating classes", "A type of variable", "A special kind of method"], correctAnswer: 0 },
+                    { question: "What is method overloading?", options: ["Defining multiple methods with the same name but different parameters", "Defining a method that is too complex", "Creating too many methods in a class", "Redefining a method from a parent class"], correctAnswer: 0 },
+                    { question: "What is method overriding?", options: ["Redefining a method in a child class that is already defined in the parent class", "Defining multiple methods with the same name", "Creating a new method with a similar name", "Changing the parameters of an existing method"], correctAnswer: 0 },
+                    { question: "What is an abstract class?", options: ["A class that cannot be instantiated and may contain abstract methods", "A class with no methods", "A class that is difficult to understand", "A class that contains only data members"], correctAnswer: 0 },
+                    { question: "What is an interface?", options: ["A reference type that can contain only constants, method signatures, and nested types", "A type of user interface in programming", "A connection between two classes", "A special kind of abstract class"], correctAnswer: 0 },
+                    { question: "What is the difference between abstraction and encapsulation?", options: ["Abstraction focuses on hiding complexity while encapsulation focuses on bundling data and methods", "Abstraction is about bundling while encapsulation is about hiding", "They are the same concept", "Abstraction is for classes while encapsulation is for objects"], correctAnswer: 0 },
+                    { question: "What is a constructor?", options: ["A special method used to initialize objects", "A method that destroys objects", "A function that constructs the class", "A blueprint for creating methods"], correctAnswer: 0 },
+                    { question: "What is a destructor?", options: ["A special method called when an object is destroyed", "A method that deconstructs the class", "A function that removes methods from a class", "A way to destroy the entire program"], correctAnswer: 0 },
+                    { question: "What is the 'this' keyword used for?", options: ["To refer to the current object", "To refer to the parent class", "To create a new object", "To refer to a static method"], correctAnswer: 0 },
+                    { question: "What are access modifiers?", options: ["Keywords that set the accessibility of classes, methods, and other members", "Methods that modify access to databases", "Tools for modifying program access", "Functions that change accessibility settings"], correctAnswer: 0 },
+                    { question: "What is the difference between public and private access modifiers?", options: ["Public members are accessible from anywhere, private only within the class", "Private members are accessible from anywhere, public only within the class", "They are the same", "Public is for methods, private is for variables"], correctAnswer: 0 },
+                    { question: "What is a static member?", options: ["A member that belongs to the class rather than any object", "A member that cannot be changed", "A member that is always public", "A member that is inherited"], correctAnswer: 0 },
+                    { question: "What is the difference between composition and inheritance?", options: ["Composition defines a 'has-a' relationship, inheritance defines an 'is-a' relationship", "Inheritance defines a 'has-a' relationship, composition defines an 'is-a' relationship", "They are the same concept", "Composition is for interfaces, inheritance is for classes"], correctAnswer: 0 },
+                    { question: "What is a singleton pattern?", options: ["A design pattern that restricts instantiation of a class to one object", "A pattern for creating single methods", "A way to create only one variable", "A pattern for single inheritance"], correctAnswer: 0 },
+                    { question: "What is a factory pattern?", options: ["A design pattern that uses factory methods to create objects without specifying the exact class", "A pattern for creating factory classes", "A way to manufacture objects in bulk", "A pattern used in industrial programming"], correctAnswer: 0 },
+                    { question: "What is method chaining?", options: ["A technique where multiple methods are called in a single statement", "Connecting methods together in a chain", "A way to link methods from different classes", "A pattern for method inheritance"], correctAnswer: 0 },
+                    { question: "What is the difference between abstract classes and interfaces?", options: ["Abstract classes can have implemented methods, interfaces cannot", "Interfaces can have implemented methods, abstract classes cannot", "They are the same", "Abstract classes are for data, interfaces are for methods"], correctAnswer: 0 },
+                    { question: "What is multiple inheritance?", options: ["When a class inherits from more than one parent class", "When a class has multiple child classes", "When multiple classes inherit from the same parent", "When inheritance is used multiple times"], correctAnswer: 0 },
+                    { question: "Why is multiple inheritance not supported in some languages like Java?", options: ["To avoid complexity and ambiguity (diamond problem)", "Because it's not useful", "Because it's too slow", "Because it's not object-oriented"], correctAnswer: 0 },
+                    { question: "What is the diamond problem?", options: ["An ambiguity that arises when two classes B and C inherit from A, and class D inherits from both B and C", "A problem with diamond-shaped class diagrams", "An issue with precious gem inheritance", "A problem with multiple interfaces"], correctAnswer: 0 },
+                    { question: "What is a virtual function?", options: ["A function that can be overridden in a derived class", "A function that doesn't exist", "A function that is only virtually present", "A function for virtual reality applications"], correctAnswer: 0 },
+                    { question: "What is a pure virtual function?", options: ["A virtual function that has no implementation in the base class", "A function that is completely virtual", "A function that is always overridden", "A function with no parameters"], correctAnswer: 0 },
+                    { question: "What is an abstract method?", options: ["A method that is declared but not implemented", "A method that is difficult to understand", "A method that is not concrete", "A method that is hidden"], correctAnswer: 0 },
+                    { question: "What is a final class?", options: ["A class that cannot be inherited", "The last class in the inheritance hierarchy", "A class that is complete", "A class that cannot be modified"], correctAnswer: 0 },
+                    { question: "What is a final method?", options: ["A method that cannot be overridden", "The last method in a class", "A method that is complete", "A method that cannot be called"], correctAnswer: 0 },
+                    { question: "What is a sealed class?", options: ["A class that cannot be inherited (similar to final class in some languages)", "A class that is closed for modification", "A class that is encrypted", "A class that cannot be instantiated"], correctAnswer: 0 },
+                    { question: "What is the difference between static binding and dynamic binding?", options: ["Static binding occurs at compile time, dynamic binding at runtime", "Dynamic binding occurs at compile time, static binding at runtime", "They are the same", "Static binding is for variables, dynamic for methods"], correctAnswer: 0 },
+                    { question: "What is early binding?", options: ["When the method to be called is determined at compile time", "When methods are bound early in the program", "When binding happens before object creation", "When methods are bound to objects early"], correctAnswer: 0 },
+                    { question: "What is late binding?", options: ["When the method to be called is determined at runtime", "When binding happens late in the program", "When methods are bound after object destruction", "When binding is delayed intentionally"], correctAnswer: 0 },
+                    { question: "What is a friend function?", options: ["A function that has access to private members of a class it is declared as friend to", "A function that is friendly to all classes", "A function that helps other functions", "A function that is always public"], correctAnswer: 0 },
+                    { question: "What is a friend class?", options: ["A class that has access to private members of another class it is declared as friend to", "A class that is friendly to all other classes", "A class that contains only friend functions", "A class that is always public"], correctAnswer: 0 },
+                    { question: "What is an inner class?", options: ["A class defined within another class", "A class that is internally used", "A class that is hidden", "A class that contains other classes"], correctAnswer: 0 },
+                    { question: "What is a nested class?", options: ["A class defined within another class (similar to inner class)", "A class that is nested in inheritance", "A class that contains nested methods", "A class with multiple levels"], correctAnswer: 0 },
+                    { question: "What is the difference between aggregation and composition?", options: ["Aggregation is a weak 'has-a' relationship, composition is a strong 'has-a' relationship", "Composition is a weak 'has-a' relationship, aggregation is a strong 'has-a' relationship", "They are the same", "Aggregation is for interfaces, composition for classes"], correctAnswer: 0 },
+                    { question: "What is a copy constructor?", options: ["A constructor that creates an object by copying variables from another object", "A constructor that copies itself", "A constructor that creates copies of methods", "A constructor for duplicate objects"], correctAnswer: 0 },
+                    { question: "What is a default constructor?", options: ["A constructor with no parameters", "The constructor that is used by default", "A constructor that sets default values", "The first constructor in a class"], correctAnswer: 0 },
+                    { question: "What is a parameterized constructor?", options: ["A constructor that takes parameters", "A constructor with special parameters", "A constructor that parameterizes the class", "A constructor that is parameterized for optimization"], correctAnswer: 0 },
+                    { question: "What is a destructor used for?", options: ["To release resources before an object is destroyed", "To destroy the object immediately", "To remove the object from memory", "To delete the class definition"], correctAnswer: 0 },
+                    { question: "What is garbage collection?", options: ["Automatic memory management that reclaims memory occupied by objects no longer in use", "Collecting unused code", "A process of cleaning up variables", "A method for organizing memory"], correctAnswer: 0 },
+                    { question: "What is the 'super' keyword used for?", options: ["To refer to the parent class", "To create super classes", "To call superior methods", "To access super variables"], correctAnswer: 0 },
+                    { question: "What is the difference between 'this' and 'super'?", options: ["'this' refers to current object, 'super' refers to parent class", "'super' refers to current object, 'this' refers to parent class", "They are the same", "'this' is for methods, 'super' for variables"], correctAnswer: 0 },
+                    { question: "What is a static class?", options: ["A class that contains only static members and cannot be instantiated", "A class that doesn't move", "A class with static variables only", "A class that is always available"], correctAnswer: 0 },
+                    { question: "What is a static method?", options: ["A method that belongs to the class rather than any object instance", "A method that doesn't change", "A method that is always available", "A method that cannot be overridden"], correctAnswer: 0 },
+                    { question: "What is a static variable?", options: ["A variable that belongs to the class rather than any object instance", "A variable that doesn't change", "A variable that is always available", "A variable that cannot be modified"], correctAnswer: 0 },
+                    { question: "What is an instance variable?", options: ["A variable that belongs to an object instance", "A variable that gives an instance", "A variable that creates instances", "A variable of instance type"], correctAnswer: 0 },
+                    { question: "What is an instance method?", options: ["A method that belongs to an object instance", "A method that creates instances", "A method that is instantiated", "A method of instance type"], correctAnswer: 0 },
+                    { question: "What is a class variable?", options: ["A variable that belongs to the class (same as static variable)", "A variable that defines a class", "A variable of class type", "A variable that creates classes"], correctAnswer: 0 },
+                    { question: "What is a class method?", options: ["A method that belongs to the class (same as static method)", "A method that defines a class", "A method of class type", "A method that creates classes"], correctAnswer: 0 },
+                    { question: "What is a constant?", options: ["A variable whose value cannot be changed once assigned", "A variable that is always constant", "A special type of variable", "A variable that contains constant data"], correctAnswer: 0 },
+                    { question: "What is a read-only variable?", options: ["A variable that can only be read, not modified", "A variable that is only for reading", "A variable that reads itself", "A variable with read permissions"], correctAnswer: 0 },
+                    { question: "What is a property?", options: ["A member that provides a flexible mechanism to read, write, or compute the value of a private field", "Something that belongs to an object", "A characteristic of a class", "A special kind of variable"], correctAnswer: 0 },
+                    { question: "What is an indexer?", options: ["A member that allows an object to be indexed like an array", "Something that creates indexes", "A method for indexing objects", "A property that indexes values"], correctAnswer: 0 },
+                    { question: "What is an event?", options: ["A member that enables a class or object to provide notifications", "Something that happens in a program", "A special kind of method", "A variable that tracks events"], correctAnswer: 0 },
+                    { question: "What is a delegate?", options: ["A type that represents references to methods", "Someone who represents others", "A special kind of object", "A method that delegates tasks"], correctAnswer: 0 },
+                    { question: "What is a lambda expression?", options: ["An anonymous function that can be used to create delegates or expression tree types", "A mathematical expression", "A special kind of variable", "An expression that uses Greek letters"], correctAnswer: 0 },
+                    { question: "What is an anonymous type?", options: ["A type that doesn't have a name", "A type that is unknown", "A type that hides its identity", "A type without properties"], correctAnswer: 0 },
+                    { question: "What is a generic class?", options: ["A class that can work with any data type", "A class that is generic", "A class without specific type", "A class that generates objects"], correctAnswer: 0 },
+                    { question: "What is a generic method?", options: ["A method that can work with any data type", "A method that is generic", "A method without specific type", "A method that generates results"], correctAnswer: 0 },
+                    { question: "What is type parameter?", options: ["A placeholder for a specific type that a generic class or method uses", "A parameter that has a type", "A special kind of variable", "A parameter for typing"], correctAnswer: 0 },
+                    { question: "What is boxing?", options: ["The process of converting a value type to an object type", "Putting something in a box", "Creating a box object", "The process of packaging code"], correctAnswer: 0 },
+                    { question: "What is unboxing?", options: ["The process of converting an object type to a value type", "Taking something out of a box", "Destroying a box object", "The process of unpackaging code"], correctAnswer: 0 },
+                    { question: "What is the difference between value types and reference types?", options: ["Value types store data directly, reference types store references to data", "Reference types store data directly, value types store references to data", "They are the same", "Value types are more valuable"], correctAnswer: 0 },
+                    { question: "What is a struct?", options: ["A value type that can contain data members and methods", "A type of structure", "A way to structure code", "A special kind of class"], correctAnswer: 0 },
+                    { question: "What is the difference between class and struct?", options: ["Class is reference type, struct is value type", "Struct is reference type, class is value type", "They are the same", "Class is for objects, struct for data"], correctAnswer: 0 },
+                    { question: "What is an enum?", options: ["A value type that consists of a set of named constants", "A type of enumeration", "A way to enumerate objects", "A special kind of variable"], correctAnswer: 0 },
+                    { question: "What is a namespace?", options: ["A container that holds a set of related classes and other types", "A space for names", "A way to name classes", "A special kind of class"], correctAnswer: 0 },
+                    { question: "What is the purpose of 'using' directive?", options: ["To import namespaces so their types can be used without full qualification", "To use a class", "To indicate what is being used", "To create a using statement"], correctAnswer: 0 },
+                    { question: "What is an assembly?", options: ["A compiled code library used for deployment, versioning, and security", "A gathering of classes", "A way to assemble code", "A special kind of namespace"], correctAnswer: 0 },
+                    { question: "What is reflection?", options: ["The ability to inspect and interact with metadata of types at runtime", "Thinking about code", "A mirror image of a class", "A way to reflect on objects"], correctAnswer: 0 },
+                    { question: "What is an attribute?", options: ["A tag used to add metadata to a program element", "A characteristic of an object", "A type of variable", "A special kind of method"], correctAnswer: 0 },
+                    { question: "What is serialization?", options: ["The process of converting an object into a stream of bytes to store or transmit", "Making something serial", "Arranging in sequence", "A way to serialize code"], correctAnswer: 0 },
+                    { question: "What is deserialization?", options: ["The process of converting a stream of bytes back into an object", "Making something not serial", "Reversing sequence", "A way to deserialize code"], correctAnswer: 0 },
+                    { question: "What is a design pattern?", options: ["A general reusable solution to a commonly occurring problem in software design", "A way to design classes", "A pattern for designing", "A template for code"], correctAnswer: 0 },
+                    { question: "What is the MVC pattern?", options: ["Model-View-Controller: separates application into three main components", "A pattern for MVC architecture", "A way to model views", "A controller pattern"], correctAnswer: 0 },
+                    { question: "What is the MVVM pattern?", options: ["Model-View-ViewModel: a variation of MVC for modern UI development", "A pattern for MVVM architecture", "A way to model view models", "A view model pattern"], correctAnswer: 0 },
+                    { question: "What is dependency injection?", options: ["A technique where one object supplies the dependencies of another object", "Injecting dependencies into code", "A way to depend on objects", "A special kind of inheritance"], correctAnswer: 0 },
+                    { question: "What is inversion of control?", options: ["A principle where the control of objects is transferred to a container or framework", "Reversing control flow", "A way to control inversion", "A special control mechanism"], correctAnswer: 0 },
+                    { question: "What is a solid principle?", options: ["A set of five design principles for object-oriented programming", "A principle that is solid", "A reliable programming principle", "A principle for solid code"], correctAnswer: 0 },
+                    { question: "What does SOLID stand for?", options: ["Single Responsibility, Open-Closed, Liskov Substitution, Interface Segregation, Dependency Inversion", "Solid Object Linear Integrated Design", "Structured Object Language Interface Development", "System Oriented Language for Interface Design"], correctAnswer: 0 },
+                    { question: "What is the single responsibility principle?", options: ["A class should have only one reason to change", "A class should have only one responsibility", "A class should do only one thing", "A class should have only one method"], correctAnswer: 0 },
+                    { question: "What is the open-closed principle?", options: ["Software entities should be open for extension but closed for modification", "Software should be open and closed", "Code should be open to changes", "Classes should be closed to extension"], correctAnswer: 0 },
+                    { question: "What is the Liskov substitution principle?", options: ["Objects of a superclass should be replaceable with objects of a subclass without affecting correctness", "Liskov should be substituted", "Subclasses should substitute superclasses", "Objects should be substitutable"], correctAnswer: 0 },
+                    { question: "What is the interface segregation principle?", options: ["Many client-specific interfaces are better than one general-purpose interface", "Interfaces should be segregated", "Interfaces should be separate", "Clients should have specific interfaces"], correctAnswer: 0 },
+                    { question: "What is the dependency inversion principle?", options: ["Depend on abstractions, not on concretions", "Dependencies should be inverted", "Invert dependencies between classes", "Depend on inversions"], correctAnswer: 0 },
+                    { question: "What is cohesion?", options: ["The degree to which the elements of a module belong together", "Sticking together", "A measure of how well elements fit", "A way to cohere code"], correctAnswer: 0 },
+                    { question: "What is coupling?", options: ["The degree of interdependence between software modules", "How modules are coupled", "A measure of connection", "A way to couple classes"], correctAnswer: 0 },
+                    { question: "What is the difference between high cohesion and low coupling?", options: ["High cohesion: related functionality together; Low coupling: minimal dependencies between modules", "They are the same", "High cohesion: many dependencies; Low coupling: unrelated functionality", "High cohesion: minimal dependencies; Low coupling: related functionality together"], correctAnswer: 0 },
+                    { question: "What is a mock object?", options: ["A simulated object that mimics the behavior of real objects in controlled ways", "An object that mocks others", "A fake object", "A testing object"], correctAnswer: 0 },
+                    { question: "What is unit testing?", options: ["Testing individual units or components of software to ensure they work correctly", "Testing units of code", "A type of software testing", "Testing small pieces"], correctAnswer: 0 },
+                    { question: "What is test-driven development (TDD)?", options: ["A software development process where tests are written before the code", "Development driven by tests", "A way to develop tests", "Testing during development"], correctAnswer: 0 },
+                    { question: "What is behavior-driven development (BDD)?", options: ["An extension of TDD that emphasizes collaboration between developers and non-technical participants", "Development driven by behavior", "A way to develop behaviors", "Testing behavior during development"], correctAnswer: 0 },
+                    { question: "What is refactoring?", options: ["The process of restructuring existing code without changing its external behavior", "Making factories again", "A way to factor code", "Changing code structure"], correctAnswer: 0 },
+                    { question: "What is code smell?", options: ["Any characteristic in the source code that possibly indicates a deeper problem", "Code that smells bad", "A problem with code odor", "A type of code issue"], correctAnswer: 0 },
+                    { question: "What is technical debt?", options: ["The implied cost of additional rework caused by choosing an easy solution now instead of a better approach that would take longer", "Debt from technology", "A technical obligation", "Money owed for technical work"], correctAnswer: 0 }
+                ]
+            }
+        };
+        // Add this function in your script, after the QUIZ_DATA but before the UserManager class
+        function validateGmail(email) {
+            if (!email || typeof email !== 'string') {
+                return { isValid: false, reason: "Invalid input" };
+            }
+            
+            email = email.trim().toLowerCase();
+            
+            // Must be exactly @gmail.com
+            const domain = email.split('@')[1];
+            if (domain !== 'gmail.com') {
+                return { isValid: false, reason: "Please use a Gmail address (@gmail.com)" };
+            }
+            
+            const [localPart] = email.split('@');
+            
+            // Gmail username rules
+            if (localPart.length < 6 || localPart.length > 30) {
+                return { isValid: false, reason: "Gmail username must be 6-30 characters" };
+            }
+            
+            // Only letters, numbers, and dots allowed
+            if (!/^[a-z0-9.]+$/.test(localPart)) {
+                return { isValid: false, reason: "Gmail can only contain letters, numbers, and dots" };
+            }
+            
+            // No consecutive dots
+            if (localPart.includes('..')) {
+                return { isValid: false, reason: "Gmail cannot have consecutive dots" };
+            }
+            
+            // Cannot start or end with dot
+            if (localPart.startsWith('.') || localPart.endsWith('.')) {
+                return { isValid: false, reason: "Gmail cannot start or end with a dot" };
+            }
+            
+            return { 
+                isValid: true, 
+                reason: "Valid Gmail address"
+            };
+        }
+
+        // Helper functions
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+
+        // User Management System
+        class UserManager {
+            constructor() {
+                this.users = JSON.parse(localStorage.getItem('quizBrowserUsers')) || [];
+                this.currentUser = null;
+                // Track used questions per user per category
+                this.usedQuestions = JSON.parse(localStorage.getItem('quizBrowserUsedQuestions')) || {};
+            }
+
+            register(username, email, password) {
+                if (this.users.find(user => user.username === username)) {
+                    return { success: false, message: 'Username already exists' };
+                }
+
+                if (this.users.find(user => user.email === email)) {
+                    return { success: false, message: 'Email already registered' };
+                }
+
+                const newUser = {
+                    id: Date.now().toString(),
+                    username,
+                    email,
+                    password,
+                    stats: {
+                        totalQuizzes: 0,
+                        totalPoints: 0,
+                        averageScore: 0,
+                        quizHistory: []
+                    },
+                    createdAt: new Date().toISOString()
+                };
+
+                this.users.push(newUser);
+                this.saveUsers();
+                return { success: true, message: 'Registration successful' };
+            }
+
+            login(username, password) {
+                const user = this.users.find(u => u.username === username && u.password === password);
+                if (user) {
+                    this.currentUser = user;
+                    // Initialize used questions for this user if not exists
+                    if (!this.usedQuestions[user.id]) {
+                        this.usedQuestions[user.id] = {};
+                    }
+                    return { success: true, user };
+                }
+                return { success: false, message: 'Invalid username or password' };
+            }
+
+            logout() {
+                this.currentUser = null;
+            }
+
+            // Get unused questions for a category
+            getUnusedQuestions(category, allQuestions) {
+                if (!this.currentUser) return allQuestions;
+                
+                const userId = this.currentUser.id;
+                const usedQuestionIds = this.usedQuestions[userId]?.[category] || [];
+                
+                // Return questions that haven't been used yet
+                return allQuestions.filter((_, index) => !usedQuestionIds.includes(index));
+            }
+
+            // Mark questions as used
+            markQuestionsAsUsed(category, questionIndices) {
+                if (!this.currentUser) return;
+                
+                const userId = this.currentUser.id;
+                if (!this.usedQuestions[userId]) {
+                    this.usedQuestions[userId] = {};
+                }
+                if (!this.usedQuestions[userId][category]) {
+                    this.usedQuestions[userId][category] = [];
+                }
+                
+                // Add new question indices to used list
+                this.usedQuestions[userId][category] = [
+                    ...new Set([...this.usedQuestions[userId][category], ...questionIndices])
+                ];
+                
+                this.saveUsedQuestions();
+            }
+
+            // Reset used questions if all questions have been used
+            resetUsedQuestionsIfNeeded(category, totalQuestions) {
+                if (!this.currentUser) return;
+                
+                const userId = this.currentUser.id;
+                const usedCount = this.usedQuestions[userId]?.[category]?.length || 0;
+                
+                // If 80% or more questions have been used, reset for this category
+                if (usedCount >= totalQuestions * 0.8) {
+                    this.usedQuestions[userId][category] = [];
+                    this.saveUsedQuestions();
+                }
+            }
+
+            updateUserStats(quizScore, maxScore, quizType) {
+                if (!this.currentUser) return;
+
+                const percentage = (quizScore / maxScore) * 100;
+                
+                this.currentUser.stats.totalQuizzes += 1;
+                this.currentUser.stats.totalPoints += quizScore;
+                this.currentUser.stats.averageScore = 
+                    (this.currentUser.stats.averageScore * (this.currentUser.stats.totalQuizzes - 1) + percentage) / 
+                    this.currentUser.stats.totalQuizzes;
+                
+                this.currentUser.stats.quizHistory.unshift({
+                    quizType,
+                    score: quizScore,
+                    maxScore,
+                    percentage,
+                    date: new Date().toISOString()
+                });
+
+                if (this.currentUser.stats.quizHistory.length > 10) {
+                    this.currentUser.stats.quizHistory = this.currentUser.stats.quizHistory.slice(0, 10);
+                }
+
+                this.saveUsers();
+            }
+
+            saveUsers() {
+                localStorage.setItem('quizBrowserUsers', JSON.stringify(this.users));
+            }
+
+            saveUsedQuestions() {
+                localStorage.setItem('quizBrowserUsedQuestions', JSON.stringify(this.usedQuestions));
+            }
+        }
+
+        // Quiz Browser Application
+        class QuizBrowser {
+            constructor(userManager) {
+                this.userManager = userManager;
+                this.currentScreen = 'homeScreen';
+                this.currentQuiz = null;
+                this.currentQuestionIndex = 0;
+                this.userAnswers = [];
+                this.quizData = QUIZ_DATA;
+                this.currentQuestions = [];
+                this.currentQuestionIndices = []; // Track which questions from the pool are being used
+                
+                this.initializeElements();
+                this.attachEventListeners();
+                this.updateStatus();
+            }
+
+            initializeElements() {
+                // Login/Register elements
+                this.loginContainer = document.getElementById('loginContainer');
+                this.registerContainer = document.getElementById('registerContainer');
+                this.loginForm = document.getElementById('loginForm');
+                this.registerForm = document.getElementById('registerForm');
+                this.showRegister = document.getElementById('showRegister');
+                this.showLogin = document.getElementById('showLogin');
+                
+                // Browser elements
+                this.browserContainer = document.getElementById('browserContainer');
+                
+                // Browser controls
+                this.backBtn = document.getElementById('backBtn');
+                this.forwardBtn = document.getElementById('forwardBtn');
+                this.refreshBtn = document.getElementById('refreshBtn');
+                this.homeBtn = document.getElementById('homeBtn');
+                this.logoutBtn = document.getElementById('logoutBtn');
+                this.urlInput = document.getElementById('urlInput');
+
+                // User info elements
+                this.userAvatar = document.getElementById('userAvatar');
+                this.userGreeting = document.getElementById('userGreeting');
+                this.personalGreeting = document.getElementById('personalGreeting');
+                this.totalQuizzes = document.getElementById('totalQuizzes');
+                this.averageScore = document.getElementById('averageScore');
+                this.totalPoints = document.getElementById('totalPoints');
+
+                // Screens
+                this.homeScreen = document.getElementById('homeScreen');
+                this.quizScreen = document.getElementById('quizScreen');
+                this.resultsScreen = document.getElementById('resultsScreen');
+
+                // Quiz elements
+                this.quizTitle = document.getElementById('quizTitle');
+                this.currentQuestionEl = document.getElementById('currentQuestion');
+                this.totalQuestionsEl = document.getElementById('totalQuestions');
+                this.questionText = document.getElementById('questionText');
+                this.optionsContainer = document.getElementById('optionsContainer');
+                
+                // Navigation buttons
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.submitBtn = document.getElementById('submitBtn');
+                
+                // Results elements
+                this.finalScore = document.getElementById('finalScore');
+                this.maxScore = document.getElementById('maxScore');
+                this.scoreMessage = document.getElementById('scoreMessage');
+                this.answersList = document.getElementById('answersList');
+                this.restartQuiz = document.getElementById('restartQuiz');
+                
+                // Status
+                this.statusText = document.getElementById('statusText');
+            }
+
+            attachEventListeners() {
+                // Login/Register events
+                this.loginForm.addEventListener('submit', (e) => this.handleLogin(e));
+                this.registerForm.addEventListener('submit', (e) => this.handleRegister(e));
+                this.showRegister.addEventListener('click', (e) => this.showRegistrationForm(e));
+                this.showLogin.addEventListener('click', (e) => this.showLoginForm(e));
+                this.logoutBtn.addEventListener('click', () => this.handleLogout());
+
+                // Browser controls
+                this.backBtn.addEventListener('click', () => this.navigateBack());
+                this.forwardBtn.addEventListener('click', () => this.navigateForward());
+                this.refreshBtn.addEventListener('click', () => this.refreshQuiz());
+                this.homeBtn.addEventListener('click', () => this.goHome());
+                
+                // Quiz selection
+                document.querySelectorAll('.category-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        const quizType = e.currentTarget.dataset.quiz;
+                        this.startQuiz(quizType);
+                    });
+                });
+
+                // Quiz navigation
+                this.prevBtn.addEventListener('click', () => this.previousQuestion());
+                this.nextBtn.addEventListener('click', () => this.nextQuestion());
+                this.submitBtn.addEventListener('click', () => this.submitQuiz());
+                this.restartQuiz.addEventListener('click', () => this.goHome());
+
+                // URL input
+                this.urlInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        this.handleUrlInput();
+                    }
+                });
+            }
+
+            handleLogin(e) {
+                e.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+                
+                if (!username) {
+                    this.showError('usernameError', 'Username is required');
+                    return;
+                }
+                
+                if (!password) {
+                    this.showError('passwordError', 'Password is required');
+                    return;
+                }
+                
+                const result = this.userManager.login(username, password);
+                if (result.success) {
+                    this.showBrowser();
+                    this.updateUserInfo();
+                } else {
+                    this.showError('passwordError', result.message);
+                }
+            }
+
+            handleRegister(e) {
+                e.preventDefault();
+                const username = document.getElementById('regUsername').value;
+                const email = document.getElementById('regEmail').value;
+                const password = document.getElementById('regPassword').value;
+                const confirmPassword = document.getElementById('regConfirmPassword').value;
+                
+                if (!username) {
+                    this.showError('regUsernameError', 'Username is required');
+                    return;
+                }
+                
+                // Email validation - must be Gmail
+                if (!email) {
+                    this.showError('regEmailError', 'Email is required');
+                    return;
+                }
+
+                // Validate it's a Gmail address
+                const gmailValidation = validateGmail(email);
+                if (!gmailValidation.isValid) {
+                    this.showError('regEmailError', gmailValidation.reason);
+                    return;
+                }
+                
+                if (!password || password.length < 6) {
+                    this.showError('regPasswordError', 'Password must be at least 6 characters');
+                    return;
+                }
+                
+                if (password !== confirmPassword) {
+                    this.showError('regConfirmPasswordError', 'Passwords do not match');
+                    return;
+                }
+                
+                const result = this.userManager.register(username, email, password);
+                if (result.success) {
+                    alert('Registration successful! Please login with your new account.');
+                    this.showLoginForm();
+                } else {
+                    this.showError('regUsernameError', result.message);
+                }
+            }
+
+            handleLogout() {
+                this.userManager.logout();
+                this.showLoginForm();
+                this.browserContainer.style.display = 'none';
+                this.loginContainer.style.display = 'block';
+            }
+
+            showBrowser() {
+                this.loginContainer.style.display = 'none';
+                this.registerContainer.style.display = 'none';
+                this.browserContainer.style.display = 'flex';
+            }
+
+            showRegistrationForm(e) {
+                e.preventDefault();
+                this.loginContainer.style.display = 'none';
+                this.registerContainer.style.display = 'block';
+            }
+
+            showLoginForm(e) {
+                if (e) e.preventDefault();
+                this.loginContainer.style.display = 'block';
+                this.registerContainer.style.display = 'none';
+            }
+
+            updateUserInfo() {
+                const user = this.userManager.currentUser;
+                if (!user) return;
+                
+                this.userAvatar.textContent = user.username.charAt(0).toUpperCase();
+                this.userGreeting.textContent = `Welcome, ${user.username}!`;
+                this.personalGreeting.textContent = `Welcome back, ${user.username}!`;
+                
+                this.totalQuizzes.textContent = user.stats.totalQuizzes;
+                this.averageScore.textContent = `${Math.round(user.stats.averageScore)}%`;
+                this.totalPoints.textContent = user.stats.totalPoints;
+            }
+
+            showError(elementId, message) {
+                const errorElement = document.getElementById(elementId);
+                errorElement.textContent = message;
+                errorElement.style.display = 'block';
+                
+                setTimeout(() => {
+                    errorElement.style.display = 'none';
+                }, 3000);
+            }
+
+            isValidEmail(email) {
+                const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                return re.test(email);
+            }
+
+            showScreen(screenName) {
+                document.querySelectorAll('.screen').forEach(screen => {
+                    screen.classList.remove('active');
+                });
+
+                document.getElementById(screenName).classList.add('active');
+                this.currentScreen = screenName;
+                this.updateStatus();
+            }
+
+            startQuiz(quizType) {
+                this.currentQuiz = this.quizData[quizType];
+                if (!this.currentQuiz) {
+                    this.showError('statusText', 'Quiz not found!');
+                    return;
+                }
+
+                // Check if we need to reset used questions
+                this.userManager.resetUsedQuestionsIfNeeded(quizType, this.currentQuiz.questions.length);
+
+                // Get unused questions
+                const unusedQuestions = this.userManager.getUnusedQuestions(quizType, this.currentQuiz.questions);
+                
+                // If we don't have enough unused questions, use all questions
+                const availableQuestions = unusedQuestions.length >= 10 ? unusedQuestions : this.currentQuiz.questions;
+                
+                // Select 10 random questions
+                const selectedQuestions = this.selectRandomQuestions(availableQuestions, 10);
+                
+                // Store the original indices of selected questions
+                this.currentQuestionIndices = selectedQuestions.map(q => 
+                    this.currentQuiz.questions.findIndex(originalQ => originalQ.question === q.question)
+                );
+                
+                this.currentQuestions = selectedQuestions;
+                this.currentQuestionIndex = 0;
+                this.userAnswers = new Array(this.currentQuestions.length).fill(null);
+                
+                this.quizTitle.textContent = this.currentQuiz.title;
+                this.totalQuestionsEl.textContent = this.currentQuestions.length;
+                
+                this.showScreen('quizScreen');
+                this.displayQuestion();
+                this.updateNavigation();
+            }
+
+            selectRandomQuestions(allQuestions, count) {
+                const questionsCopy = [...allQuestions];
+                const shuffled = shuffleArray(questionsCopy);
+                return shuffled.slice(0, count);
+            }
+
+            displayQuestion() {
+                const question = this.currentQuestions[this.currentQuestionIndex];
+                
+                this.currentQuestionEl.textContent = this.currentQuestionIndex + 1;
+                this.questionText.textContent = question.question;
+                
+                // Clear previous options
+                this.optionsContainer.innerHTML = '';
+                
+                // Add new options
+                question.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    if (this.userAnswers[this.currentQuestionIndex] === index) {
+                        optionElement.classList.add('selected');
+                    }
+                    optionElement.textContent = option;
+                    optionElement.addEventListener('click', () => this.selectOption(index));
+                    this.optionsContainer.appendChild(optionElement);
+                });
+            }
+
+            selectOption(optionIndex) {
+                // Store the user's answer - NO INSTANT FEEDBACK
+                this.userAnswers[this.currentQuestionIndex] = optionIndex;
+                
+                // Update the display to show selection
+                this.displayQuestion();
+                
+                // Automatically move to next question after 0.5 seconds
+                if (this.currentQuestionIndex < this.currentQuestions.length - 1) {
+                    setTimeout(() => {
+                        this.nextQuestion();
+                    }, 500);
+                } else {
+                    // If it's the last question, enable the submit button
+                    this.updateNavigation();
+                }
+            }
+
+            previousQuestion() {
+                if (this.currentQuestionIndex > 0) {
+                    this.currentQuestionIndex--;
+                    this.displayQuestion();
+                    this.updateNavigation();
+                }
+            }
+
+            nextQuestion() {
+                if (this.currentQuestionIndex < this.currentQuestions.length - 1) {
+                    this.currentQuestionIndex++;
+                    this.displayQuestion();
+                    this.updateNavigation();
+                }
+            }
+
+            updateNavigation() {
+                this.prevBtn.disabled = this.currentQuestionIndex === 0;
+                this.nextBtn.disabled = this.currentQuestionIndex === this.currentQuestions.length - 1;
+                
+                this.submitBtn.style.display = 
+                    this.currentQuestionIndex === this.currentQuestions.length - 1 ? 
+                    'block' : 'none';
+            }
+
+            submitQuiz() {
+                let score = 0;
+                const results = [];
+
+                this.currentQuestions.forEach((question, index) => {
+                    const userAnswer = this.userAnswers[index];
+                    const isCorrect = userAnswer === question.correctAnswer;
+                    
+                    if (isCorrect) score++;
+                    
+                    results.push({
+                        question: question.question,
+                        userAnswer: userAnswer !== null ? question.options[userAnswer] : 'Not answered',
+                        correctAnswer: question.options[question.correctAnswer],
+                        isCorrect: isCorrect
+                    });
+                });
+
+                // Mark these questions as used so they won't appear in future quizzes
+                this.userManager.markQuestionsAsUsed(
+                    Object.keys(this.quizData).find(key => this.quizData[key] === this.currentQuiz),
+                    this.currentQuestionIndices
+                );
+
+                // Update user stats
+                this.userManager.updateUserStats(score, this.currentQuestions.length, this.currentQuiz.title);
+                this.updateUserInfo();
+                
+                this.showResults(score, results);
+            }
+
+            showResults(score, results) {
+                this.finalScore.textContent = score;
+                this.maxScore.textContent = this.currentQuestions.length;
+                
+                const percentage = (score / this.currentQuestions.length) * 100;
+                if (percentage >= 90) {
+                    this.scoreMessage.textContent = 'Outstanding! 🎉';
+                } else if (percentage >= 80) {
+                    this.scoreMessage.textContent = 'Excellent! 👍';
+                } else if (percentage >= 70) {
+                    this.scoreMessage.textContent = 'Good job! 💪';
+                } else if (percentage >= 60) {
+                    this.scoreMessage.textContent = 'Not bad! 😊';
+                } else if (percentage >= 50) {
+                    this.scoreMessage.textContent = 'You passed! 📚';
+                } else {
+                    this.scoreMessage.textContent = 'Keep practicing! 🌟';
+                }
+
+                // Display answers review
+                this.answersList.innerHTML = '';
+                results.forEach((result, index) => {
+                    const answerItem = document.createElement('div');
+                    answerItem.className = `answer-item ${result.isCorrect ? 'correct' : 'incorrect'}`;
+                    answerItem.innerHTML = `
+                        <strong>Question ${index + 1}:</strong> ${result.question}<br>
+                        <strong>Your answer:</strong> ${result.userAnswer}<br>
+                        <strong>Result:</strong> ${result.isCorrect ? 'Correct ✅' : 'Incorrect ❌'}<br>
+                        <strong>Correct answer:</strong> ${result.correctAnswer}
+                    `;
+                    this.answersList.appendChild(answerItem);
+                });
+
+                this.showScreen('resultsScreen');
+            }
+
+            navigateBack() {
+                if (this.currentScreen === 'quizScreen' && this.currentQuestionIndex > 0) {
+                    this.previousQuestion();
+                } else if (this.currentScreen === 'resultsScreen') {
+                    this.showScreen('quizScreen');
+                }
+            }
+
+            navigateForward() {
+                if (this.currentScreen === 'quizScreen' && 
+                    this.currentQuestionIndex < this.currentQuestions.length - 1) {
+                    this.nextQuestion();
+                }
+            }
+
+            refreshQuiz() {
+                if (this.currentScreen === 'quizScreen') {
+                    const quizType = Object.keys(this.quizData).find(
+                        key => this.quizData[key] === this.currentQuiz
+                    );
+                    if (quizType) {
+                        this.startQuiz(quizType);
+                    }
+                }
+            }
+
+            goHome() {
+                this.showScreen('homeScreen');
+            }
+
+            handleUrlInput() {
+                const url = this.urlInput.value.toLowerCase();
+                if (url.includes('math')) {
+                    this.startQuiz('math');
+                } else if (url.includes('science')) {
+                    this.startQuiz('science');
+                } else if (url.includes('history')) {
+                    this.startQuiz('history');
+                } else if (url.includes('geography')) {
+                    this.startQuiz('geography');
+                } else {
+                    this.showError('statusText', 'Invalid quiz name. Try: math, science, history, or geography');
+                }
+            }
+
+            updateStatus() {
+                const statusMessages = {
+                    'homeScreen': 'Ready - Select a quiz to begin',
+                    'quizScreen': `Taking ${this.currentQuiz?.title || 'Quiz'} - Question ${this.currentQuestionIndex + 1}`,
+                    'resultsScreen': 'Quiz completed - Viewing results'
+                };
+                
+                this.statusText.textContent = statusMessages[this.currentScreen] || 'Ready';
+            }
+        }
+
+        // Initialize the application when the page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            const userManager = new UserManager();
+            const quizBrowser = new QuizBrowser(userManager);
+            
+            // Demo account for testing
+            if (userManager.users.length === 0) {
+                userManager.register('demo', 'demo@example.com', 'demo123');
+            }
+        });
+    </script>
+</body>
+</html>
